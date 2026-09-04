@@ -1,0 +1,21 @@
+{
+  "name": "Team Project",
+  "dockerComposeFile": [
+    "../compose.yml"
+  ],
+  "service": "web",
+  "workspaceFolder": "/var/www/src",
+  "forwardPorts": [9003],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "felixfbecker.php-debug",
+        "xdebug.php-debug",
+        "bmewburn.vscode-intelephense-client",
+        "coenraads.bracket-pair-colorizer-2",
+        "oderwat.indent-rainbow",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  }
+}

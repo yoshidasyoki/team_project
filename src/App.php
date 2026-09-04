@@ -1,0 +1,74 @@
+<?php
+
+// require_onceで必要なクラスを読み込むこと
+require_once 'app/Router.php';
+require_once 'app/View.php';
+require_once 'app/DatabaseConnector.php';
+require_once 'app/Controllers/TestController.php';
+require_once 'app/Exceptions/HttpNotFoundException.php';
+
+class App
+{
+    private Router $routes;
+    private View $view;
+    private DatabaseConnector $databaseConnector;
+
+    public function __construct()
+    {
+        $this->routes = new Router($this->registerRoutes());
+        $this->view = new View(__DIR__ . '/resources/views');
+    }
+
+    public function run(): void
+    {
+        try {
+            $this->databaseConnector = new DatabaseConnector([
+                'hostname' => 'db',     // DockerのDBコンテナ名
+                'database' => 'team_dev',
+                'username' => 'team_user',
+                'password' => 'pass',
+            ]);
+
+            // リクエストURIを取得してルーティングを行う
+            $accessPath = $_SERVER['REQUEST_URI'];
+            $route = $this->routes->getRoute($accessPath);
+
+            // ルーティングで指定したロジック処理を実行
+            $controllerName = $route['controller'];
+            $actionName = $route['action'];
+            $response = $this->runAction($controllerName, $actionName);
+            $response->send();
+        } catch (HttpNotFoundException) {
+            $content = $this->view->render('/errors/404page.php');
+            $response = Response::html($content, 404);
+            $response->send();
+        }
+    }
+
+    // ルーティングの設定（ここでどのパスが来たらどのコントローラーのどのアクションを実行するかを指定する）
+    private function registerRoutes(): array
+    {
+        return [
+            '/' => ['controller' => 'TestController', 'action' => 'index'],
+            '/test' => ['controller' => 'TestController', 'action' => 'test'],
+        ];
+    }
+
+    // ここから以下はアプリの基礎動作に関わるメソッドを定義
+    // （アプリ開発時はいじらなくてOK）
+    private function runAction(string $controllerName, string $actionName): Response
+    {
+        $controller = new $controllerName($this);
+        return $controller->$actionName();
+    }
+
+    public function getDatabaseConnector(): DatabaseConnector
+    {
+        return $this->databaseConnector;
+    }
+
+    public function getView(): View
+    {
+        return $this->view;
+    }
+}

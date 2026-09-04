@@ -1,0 +1,30 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+      args:
+        HOST_UID: ${HOST_UID}
+        HOST_GID: ${HOST_GID}
+    user: "${HOST_UID}:${HOST_GID}"
+    ports:
+      - 8080:80
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    ports:
+      - 3306:3306
+    env_file:
+      - ./docker/db/db-variables.env
+    environment:
+      LANG: ja_JP.UTF-8
+    volumes:
+      - ./docker/db/my.cnf:/etc/mysql/my.cnf
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
