@@ -1,6 +1,5 @@
 <?php
 
-/** @var string $basePath */
 /** @var string $message */
 /** @var string $timestamp */
 /** @var array $databases */

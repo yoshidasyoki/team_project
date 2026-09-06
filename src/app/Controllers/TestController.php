@@ -13,17 +13,22 @@ class TestController extends Controller
 
     public function test(): Response
     {
-        // DB接続確認
-        $stmt = $this->dbh->query('SHOW DATABASES'); // 簡単なクエリを実行してDBへの接続確認
+        // DB接続・操作
+        $stmt = $this->dbh->query('SHOW DATABASES');
         $databases = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // ① 埋め込むデータを設定
         $variables = [
             'message' => 'This is a test message.',
             'timestamp' => date('Y-m-d H:i:s'),
             'databases' => $databases,
             'lists' => ['Item 1', 'Item 2', 'Item 3'],
         ];
+
+        // ② レンダリング処理の実装
         $content = $this->render('/test/test.php', $variables);
-        return Response::html($content);
+
+        // ③ HTTPレスポンスの設定
+        return Response::html($content, 200);
     }
 }
