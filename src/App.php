@@ -3,9 +3,12 @@
 // require_onceで必要なクラスを読み込むこと
 require_once 'app/Router.php';
 require_once 'app/View.php';
-require_once 'app/DatabaseConnector.php';
-require_once 'app/Controllers/TestController.php';
 require_once 'app/Exceptions/HttpNotFoundException.php';
+require_once 'app/DatabaseConnector.php';
+require_once 'app/Middlewares/AuthMiddleware.php';
+
+require_once 'app/Controllers/TestController.php';
+require_once 'app/Controllers/AuthController.php';
 
 class App
 {
@@ -22,6 +25,7 @@ class App
     public function run(): void
     {
         try {
+            session_start();
             $this->databaseConnector = new DatabaseConnector([
                 'hostname' => 'db',     // DockerのDBコンテナ名
                 'database' => 'team_dev',
@@ -32,6 +36,13 @@ class App
             // リクエストURIを取得してルーティングを行う
             $accessPath = $_SERVER['REQUEST_URI'];
             $route = $this->routes->getRoute($accessPath);
+
+            // ログイン状態でないとアプリ内部にアクセスできないよう制御
+            $middleware = $route['middleware'];
+            if (!$middleware() ?? false) {
+                Response::redirect('/login')->send();
+                return;
+            }
 
             // ルーティングで指定したロジック処理を実行
             $controllerName = $route['controller'];
@@ -49,8 +60,31 @@ class App
     private function registerRoutes(): array
     {
         return [
-            '/' => ['controller' => 'TestController', 'action' => 'index'],
-            '/test' => ['controller' => 'TestController', 'action' => 'test'],
+            '/' => [
+                'middleware' => fn() => AuthMiddleware::auth(),
+                'controller' => 'TestController',
+                'action' => 'index',
+            ],
+            '/test' => [
+                'middleware' => fn() => AuthMiddleware::auth(),
+                'controller' => 'TestController',
+                'action' => 'test',
+            ],
+            '/login' => [
+                'middleware' => fn() => AuthMiddleware::guest(),
+                'controller' => 'AuthController',
+                'action' => 'index',
+            ],
+            '/login/auth' => [
+                'middleware' => fn() => AuthMiddleware::guest(),
+                'controller' => 'AuthController',
+                'action' => 'auth',
+            ],
+            '/logout' => [
+                'middleware' => fn() => AuthMiddleware::auth(),
+                'controller' => 'AuthController',
+                'action' => 'logout',
+            ],
         ];
     }
 

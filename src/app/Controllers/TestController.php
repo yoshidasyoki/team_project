@@ -7,7 +7,10 @@ class TestController extends Controller
 {
     public function index(): Response
     {
-        $content = $this->render('/test/index.php');
+        $variables = [
+            'username' => $_SESSION['username'] ?? 'Guest',
+        ];
+        $content = $this->render('/test/index.php', $variables);
         return Response::html($content);
     }
 
