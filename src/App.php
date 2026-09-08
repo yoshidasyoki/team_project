@@ -3,7 +3,6 @@
 // require_onceで必要なクラスを読み込むこと
 require_once 'app/Router.php';
 require_once 'app/View.php';
-require_once 'app/Exceptions/HttpNotFoundException.php';
 require_once 'app/DatabaseConnector.php';
 require_once 'app/Middlewares/AuthMiddleware.php';
 
@@ -37,11 +36,11 @@ class App
             $accessPath = $_SERVER['REQUEST_URI'];
             $route = $this->routes->getRoute($accessPath);
 
-            // ログイン状態でないとアプリ内部にアクセスできないよう制御
-            $middleware = $route['middleware'];
-            if (!$middleware() ?? false) {
-                Response::redirect('/login')->send();
-                return;
+            // 認証状態に応じてアクセスできるページを制御
+            if ($route['middleware'] === 'auth') {
+                AuthMiddleware::auth('/login');
+            } elseif ($route['middleware'] === 'guest') {
+                AuthMiddleware::guest('/');
             }
 
             // ルーティングで指定したロジック処理を実行
@@ -53,38 +52,57 @@ class App
             $content = $this->view->render('/errors/404page.php');
             $response = Response::html($content, 404);
             $response->send();
+        } catch (MethodNotAllowedException) {
+            $content = $this->view->render('/errors/405page.php');
+            $response = Response::html($content, 405);
+            $response->send();
         }
     }
 
     // ルーティングの設定（ここでどのパスが来たらどのコントローラーのどのアクションを実行するかを指定する）
     private function registerRoutes(): array
     {
-        return [
+        // 認証済み状態でないとアクセスできないリソースを設定
+        $authRoute = [
             '/' => [
-                'middleware' => fn() => AuthMiddleware::auth(),
+                'method' => 'GET',
                 'controller' => 'TestController',
-                'action' => 'index',
-            ],
-            '/test' => [
-                'middleware' => fn() => AuthMiddleware::auth(),
-                'controller' => 'TestController',
-                'action' => 'test',
-            ],
-            '/login' => [
-                'middleware' => fn() => AuthMiddleware::guest(),
-                'controller' => 'AuthController',
-                'action' => 'index',
-            ],
-            '/login/auth' => [
-                'middleware' => fn() => AuthMiddleware::guest(),
-                'controller' => 'AuthController',
-                'action' => 'auth',
+                'action' => 'index'
             ],
             '/logout' => [
-                'middleware' => fn() => AuthMiddleware::auth(),
+                'method' => 'POST',
                 'controller' => 'AuthController',
-                'action' => 'logout',
+                'action' => 'logout'
             ],
+        ];
+
+        // 未認証状態でないとアクセスできないリソースを設定
+        $guestRoute = [
+            '/login' => [
+                'method' => 'GET',
+                'controller' => 'AuthController',
+                'action' => 'index'
+            ],
+            '/login/auth' => [
+                'method' => 'POST',
+                'controller' => 'AuthController',
+                'action' => 'auth'
+            ],
+        ];
+
+        // 認証状態に関わらずアクセスできるリソースを設定
+        $normalRoute = [
+            '/test' => [
+                'method' => 'GET',
+                'controller' => 'TestController',
+                'action' => 'test'
+            ],
+        ];
+
+        return [
+            'auth' => [...$authRoute],
+            'guest' => [...$guestRoute],
+            'normal' => [...$normalRoute],
         ];
     }
 

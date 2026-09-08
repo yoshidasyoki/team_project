@@ -2,13 +2,19 @@
 
 class AuthMiddleware
 {
-    public static function auth(): bool
+    public static function auth(string $redirectPath): void
     {
-        return isset($_SESSION['user_id']);
+        if (!isset($_SESSION['user_id'])) {
+            Response::redirect($redirectPath)->send();
+            exit;
+        }
     }
 
-    public static function guest(): bool
+    public static function guest(string $redirectPath): void
     {
-        return !isset($_SESSION['user_id']);
+        if (isset($_SESSION['user_id'])) {
+            Response::redirect($redirectPath)->send();
+            exit;
+        }
     }
 }
