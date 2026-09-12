@@ -9,6 +9,10 @@
 
 <body>
     <h2>タグページ管理</h2>
+    <form action="/tags/store" method="POST">
+        <input type="text" name="tag" placeholder="タグを入力">
+        <button type="submit">タグ追加</button>
+    </form>
 </body>
 
 </html>

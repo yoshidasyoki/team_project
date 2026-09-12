@@ -8,7 +8,8 @@ require_once 'app/Middlewares/AuthMiddleware.php';
 
 require_once 'app/Controllers/TestController.php';
 require_once 'app/Controllers/AuthController.php';
-require_once 'app/Controllers/UserController.php';
+require_once 'app/Controllers/UsersController.php';
+require_once 'app/Controllers/TagsController.php';
 
 class App
 {
@@ -70,6 +71,16 @@ class App
                 'controller' => 'TestController',
                 'action' => 'index'
             ],
+            '/tags' => [
+                'method' => 'GET',
+                'controller' => 'TagsController',
+                'action' => 'index',
+            ],
+            '/tags/store' => [
+                'method' => 'POST',
+                'controller' => 'TagsController',
+                'action' => 'store',
+            ],
             '/logout' => [
                 'method' => 'POST',
                 'controller' => 'AuthController',
@@ -91,7 +102,7 @@ class App
             ],
             '/users/create' => [
                 'method' => 'GET',
-                'controller' => 'UserController',
+                'controller' => 'UsersController',
                 'action' => 'create',
             ],
         ];

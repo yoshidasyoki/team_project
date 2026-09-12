@@ -3,7 +3,7 @@
 require_once 'app/Controllers/Controller.php';
 require_once 'app/Response.php';
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     public function create(): Response
     {
