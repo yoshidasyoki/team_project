@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="resources/css/404page.css">
-    <title>存在しないページ</title>
+    <title>タグ管理</title>
 </head>
 
 <body>
-    <h2 class="text-3xl">404 Not Found</h2>
+    <h2>タグページ管理</h2>
 </body>
 
 </html>

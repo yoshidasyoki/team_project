@@ -8,6 +8,7 @@ require_once 'app/Middlewares/AuthMiddleware.php';
 
 require_once 'app/Controllers/TestController.php';
 require_once 'app/Controllers/AuthController.php';
+require_once 'app/Controllers/UserController.php';
 
 class App
 {
@@ -87,6 +88,11 @@ class App
                 'method' => 'POST',
                 'controller' => 'AuthController',
                 'action' => 'auth'
+            ],
+            '/users/create' => [
+                'method' => 'GET',
+                'controller' => 'UserController',
+                'action' => 'create',
             ],
         ];
 
