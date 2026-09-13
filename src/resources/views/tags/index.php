@@ -1,3 +1,8 @@
+<?php
+
+/** @var array $tags */
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -13,6 +18,12 @@
         <input type="text" name="tag" placeholder="タグを入力">
         <button type="submit">タグ追加</button>
     </form>
+
+    <ul>
+        <?php foreach ($tags as $tag) : ?>
+            <li><?php echo $tag['name'] ?></li>
+        <?php endforeach; ?>
+    </ul>
 </body>
 
 </html>

@@ -7,15 +7,23 @@ class TagsController extends Controller
 {
     public function index(): Response
     {
-        $content = $this->render('/tags/index.php');
+        $sql = 'SELECT name FROM tags;';
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute();
+        $tags = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        $content = $this->render('/tags/index.php', ['tags' => $tags]);
         return Response::html($content);
     }
 
     public function store(): Response
     {
-        $form = $_POST['tag'];
+        $tag = $_POST['tag'];   // 入力値を取得
 
-        // DBへの登録処理を記載する
+        $sql = 'INSERT INTO tags (name) VALUES (:tag)';
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue('tag', $tag);
+        $sth->execute();
 
         return Response::redirect('/tags');
     }
