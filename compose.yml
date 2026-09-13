@@ -15,7 +15,9 @@ services:
       - db
 
   db:
-    image: mysql:8.4
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
     ports:
       - 53306:3306
     env_file:
