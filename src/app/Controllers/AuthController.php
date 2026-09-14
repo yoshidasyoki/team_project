@@ -10,21 +10,27 @@ class AuthController extends Controller
 
     public function auth()
     {
-        $form = $_POST;
 
-        // 仮のユーザー情報（本来はDBから取得する）
-        $userInfo = [
-            'id' => 1,
-            'username' => "test",
-            "password" => "pass"
-        ];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
 
-        if ($form['username'] === $userInfo['username'] && $form['password'] === $userInfo['password']) {
+        $sql = 'SELECT * FROM users WHERE name = :name';
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute([':name' => $username]);
+        $user = $sth->fetch(PDO::FETCH_ASSOC);
+
+        if (password_verify($password, $user['password'])) {
             session_regenerate_id(true);
-            $_SESSION['user_id'] = $userInfo['id'];
-            $_SESSION['username'] = $userInfo['username'];
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['name'];
             return Response::redirect('/');
         }
+
+        $_SESSION['flashMessage'] = [
+            'errors' => [
+                'auth' => 'ログインに失敗しました',
+            ],
+        ];
         return Response::redirect('/login');
     }
 
