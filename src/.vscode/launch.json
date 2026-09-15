@@ -4,8 +4,10 @@
     "../compose.yml"
   ],
   "service": "web",
-  "workspaceFolder": "/var/www/src",
-  "forwardPorts": [9003],
+  "workspaceFolder": "/var/www/html",
+  "forwardPorts": [
+    9003
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -14,8 +16,14 @@
         "bmewburn.vscode-intelephense-client",
         "coenraads.bracket-pair-colorizer-2",
         "oderwat.indent-rainbow",
-        "streetsidesoftware.code-spell-checker"
-      ]
+        "streetsidesoftware.code-spell-checker",
+        "bradlc.vscode-tailwindcss"
+      ],
+      "settings": {
+        "tailwindCSS.includeLanguages": {
+          "php": "html"
+        }
+      }
     }
   }
 }
