@@ -10,7 +10,6 @@ class AuthController extends Controller
 
     public function auth()
     {
-
         $username = $_POST['username'];
         $password = $_POST['password'];
 

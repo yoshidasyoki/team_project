@@ -6,10 +6,11 @@ require_once 'app/View.php';
 require_once 'app/DatabaseConnector.php';
 require_once 'app/Middlewares/AuthMiddleware.php';
 
-require_once 'app/Controllers/TestController.php';
+require_once 'app/Controllers/ArticlesController.php';
 require_once 'app/Controllers/AuthController.php';
 require_once 'app/Controllers/UsersController.php';
 require_once 'app/Controllers/TagsController.php';
+require_once 'app/Controllers/TestController.php';
 
 class App
 {
@@ -70,6 +71,16 @@ class App
                 'method' => 'GET',
                 'controller' => 'TestController',
                 'action' => 'index'
+            ],
+            '/articles/create' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'create',
+            ],
+            '/articles/store' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'store',
             ],
             '/tags' => [
                 'method' => 'GET',
