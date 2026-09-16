@@ -105,6 +105,11 @@ class App
                 'controller' => 'UsersController',
                 'action' => 'create',
             ],
+            '/users/create/store' => [
+                'method' => 'POST',
+                'controller' => 'UsersController',
+                'action' => 'store',
+            ],
         ];
 
         // 認証状態に関わらずアクセスできるリソースを設定
