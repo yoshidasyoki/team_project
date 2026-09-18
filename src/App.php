@@ -10,6 +10,7 @@ require_once 'app/Controllers/TestController.php';
 require_once 'app/Controllers/AuthController.php';
 require_once 'app/Controllers/UsersController.php';
 require_once 'app/Controllers/TagsController.php';
+require_once 'app/Controllers/ArticlesController.php';
 
 class App
 {
@@ -68,7 +69,7 @@ class App
         $authRoute = [
             '/' => [
                 'method' => 'GET',
-                'controller' => 'TestController',
+                'controller' => 'ArticlesController',
                 'action' => 'index'
             ],
             '/tags' => [
