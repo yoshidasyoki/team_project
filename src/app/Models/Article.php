@@ -36,4 +36,77 @@ class Article
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function fetchArticle(string $articleId): array
+    {
+        // タイトルと本文（articlesテーブルの情報）を取得
+        $articleSql = <<<EOF
+            SELECT id, title, body FROM articles
+            WHERE id = :id;
+        EOF;
+        $sth = $this->dbh->prepare($articleSql);
+        $sth->execute([':id' => $articleId]);
+        $article = $sth->fetch(PDO::FETCH_ASSOC);
+
+        // 記事のタグ情報（articles_tagsテーブルの情報）を取得
+        $tagsSql = <<<EOF
+            SELECT at.tag_id AS id, t.name
+            FROM articles_tags AS at
+            INNER JOIN tags AS t
+            ON at.tag_id = t.id
+            WHERE article_id = :article_id;
+            EOF;
+        $sth = $this->dbh->prepare($tagsSql);
+        $sth->execute([':article_id' => $articleId]);
+        $checkedTags = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        // 記事情報（タイトル、本文、タグ情報）を組み立てて返却
+        return [
+            'id' => $article['id'],
+            'title' => $article['title'],
+            'body' => $article['body'],
+            'checkedTags' => $checkedTags,
+        ];
+    }
+
+    public function updateArticle(string $articleId, array $form)
+    {
+        // タイトルと本文を更新
+        $articleSql = <<<EOF
+            UPDATE articles
+            SET title = :title,
+                body = :body
+            WHERE id = :id;
+        EOF;
+
+        $sth = $this->dbh->prepare($articleSql);
+        $sth->execute([
+            ':title' => $form['title'],
+            ':body' => $form['body'],
+            ':id' => $articleId,
+        ]);
+
+        // タグ情報は一度登録情報を削除→INSERTする形で更新処理を実装
+        $deleteSql = 'DELETE FROM articles_tags WHERE article_id = :article_id';
+        $sth = $this->dbh->prepare($deleteSql);
+        $sth->execute([':article_id' => $articleId]);
+
+        $params = [];
+        $values = [];
+        foreach ($form['tags'] as $index => $tagId) {
+            $values[] = "(:article_id, :tag_id_$index)";
+            $params['article_id'] = "$articleId";
+            $params["tag_id_$index"] = "$tagId";
+        }
+
+        $placeholder = implode(",", $values);
+        $sql = <<<EOF
+            INSERT INTO articles_tags
+                (article_id, tag_id)
+            VALUES
+                $placeholder
+        EOF;
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute($params);
+    }
 }

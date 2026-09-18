@@ -20,9 +20,6 @@ class ArticlesController extends Controller
 
     public function index(): Response
     {
-
-
-
         // 1. モデルに DB 接続（$this->dbh）を渡してインスタンス化
         // $articleModel = new Article($this->dbh);
         //↓1の最新コード DatabaseConnector から getConnection() で PDO を取得
@@ -42,8 +39,6 @@ class ArticlesController extends Controller
             'username' => $_SESSION['username'] ?? 'Guest',
             'articles' => $articles,
         ];
-
-
 
         // 4. home/index.php をレンダリングして返す
         $content = $this->render('/home/index.php', $variables);
@@ -131,7 +126,8 @@ class ArticlesController extends Controller
         $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
         $articleId = str_replace(["id="], "", $queryParams);
 
-        $article = $this->fetchArticle($articleId);
+        $articleModel = new Article($this->dbh);
+        $article = $articleModel->fetchArticle($articleId);
         $content = $this->render('/articles/show.php', [
             ...$article,
             'isAuthor' => $this->checkAuthor($articleId),
@@ -144,7 +140,8 @@ class ArticlesController extends Controller
         $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
         $articleId = str_replace(["id="], "", $queryParams);
 
-        $article = $this->fetchArticle($articleId);
+        $articleModel = new Article($this->dbh);
+        $article = $articleModel->fetchArticle($articleId);
         $tags = $this->dbh->query('SELECT id, name FROM tags')->fetchAll(PDO::FETCH_ASSOC);
         $content = $this->render('/articles/edit.php', [
             ...$article,
@@ -158,8 +155,10 @@ class ArticlesController extends Controller
         $form = $_POST;
         $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
         $articleId = str_replace(["id="], "", $queryParams);
-        $this->updateArticle($articleId, $form);
-        return Response::redirect("/");
+
+        $articleModel = new Article($this->dbh);
+        $articleModel->updateArticle($articleId, $form);
+        return Response::redirect("/articles/show?id=$articleId");
     }
 
     // 閲覧記事が投稿者本人のものであるかをチェックするメソッド
@@ -170,73 +169,5 @@ class ArticlesController extends Controller
         $sth->execute([':id' => $articleId]);
         $article = $sth->fetch(PDO::FETCH_ASSOC);
         return $article['user_id'] == $_SESSION['user_id'];
-    }
-
-    private function fetchArticle(string $articleId): array
-    {
-        $articleSql = <<<EOF
-            SELECT id, title, body FROM articles
-            WHERE id = :id;
-        EOF;
-        $sth = $this->dbh->prepare($articleSql);
-        $sth->execute([':id' => $articleId]);
-        $article = $sth->fetch(PDO::FETCH_ASSOC);
-
-        $tagsSql = <<<EOF
-            SELECT at.tag_id AS id, t.name
-            FROM articles_tags AS at
-            INNER JOIN tags AS t
-            ON at.tag_id = t.id
-            WHERE article_id = :article_id;
-            EOF;
-        $sth = $this->dbh->prepare($tagsSql);
-        $sth->execute([':article_id' => $articleId]);
-        $checkedTags = $sth->fetchAll(PDO::FETCH_ASSOC);
-        return [
-            'id' => $article['id'],
-            'title' => $article['title'],
-            'body' => $article['body'],
-            'checkedTags' => $checkedTags,
-        ];
-    }
-
-    private function updateArticle(string $articleId, array $form)
-    {
-        $articleSql = <<<EOF
-            UPDATE articles
-            SET title = :title,
-                body = :body
-            WHERE id = :id;
-        EOF;
-
-        $sth = $this->dbh->prepare($articleSql);
-        $sth->execute([
-            ':title' => $form['title'],
-            ':body' => $form['body'],
-            ':id' => $articleId,
-        ]);
-
-        // タグ更新は一度登録情報を削除→INSERTする形で簡易実装
-        $deleteSql = 'DELETE FROM articles_tags WHERE article_id = :article_id';
-        $sth = $this->dbh->prepare($deleteSql);
-        $sth->execute([':article_id' => $articleId]);
-
-        $params = [];
-        $values = [];
-        foreach ($form['tags'] as $index => $tagId) {
-            $values[] = "(:article_id, :tag_id_$index)";
-            $params['article_id'] = "$articleId";
-            $params["tag_id_$index"] = "$tagId";
-        }
-
-        $placeholder = implode(",", $values);
-        $sql = <<<EOF
-            INSERT INTO articles_tags
-                (article_id, tag_id)
-            VALUES
-                $placeholder
-        EOF;
-        $sth = $this->dbh->prepare($sql);
-        $sth->execute($params);
     }
 }
