@@ -69,7 +69,7 @@ class App
         $authRoute = [
             '/' => [
                 'method' => 'GET',
-                'controller' => 'TestController',
+                'controller' => 'ArticlesController',
                 'action' => 'index'
             ],
             '/articles/create' => [

@@ -8,8 +8,9 @@ class Controller
     private View $view;
     protected DatabaseConnector $databaseConnector;
     protected PDO $dbh;
-
-    public function __construct(private App $app)
+    
+    // ★ private を protected に変更することでArticlesControllerでコンストラクタ不要になる
+    public function __construct(protected App $app)
     {
         $this->view = $app->getView();
         $this->databaseConnector = $app->getDatabaseConnector();
