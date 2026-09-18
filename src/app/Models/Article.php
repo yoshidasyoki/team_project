@@ -91,6 +91,11 @@ class Article
         $sth = $this->dbh->prepare($deleteSql);
         $sth->execute([':article_id' => $articleId]);
 
+        // 更新後、タグが1つも登録されない場合は削除のみ実施
+        if (empty($form['tags'])) {
+            return;
+        }
+
         $params = [];
         $values = [];
         foreach ($form['tags'] as $index => $tagId) {

@@ -72,16 +72,6 @@ class App
                 'controller' => 'ArticlesController',
                 'action' => 'index'
             ],
-            '/articles/create' => [
-                'method' => 'GET',
-                'controller' => 'ArticlesController',
-                'action' => 'create',
-            ],
-            '/articles/store' => [
-                'method' => 'POST',
-                'controller' => 'ArticlesController',
-                'action' => 'store',
-            ],
             '/articles/detail' => [
                 'method' => 'GET',
                 'controller' => 'ArticlesController',
