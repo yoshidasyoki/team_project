@@ -28,9 +28,12 @@
             <li><?= $checkedTag['id'] . ':' . $checkedTag['name'] ?></li>
         <?php endforeach; ?>
     </ul>
+
+    <?php if ($isAuthor) : ?>
     <a href="/articles/edit?id=<?= $id ?>">編集する</a>
     <form action="/articles/delete?id=<?= $id ?>" method="POST">
         <button type="submit">削除する</button></form>
+    <?php endif; ?>
 </body>
 
 </html>

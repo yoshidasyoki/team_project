@@ -23,6 +23,8 @@
         <input type="password" name="password" placeholder="Password">
         <button type="submit">Login</button>
     </form>
+
+    <a href="/users/create">新規登録</a>
 </body>
 
 </html>
