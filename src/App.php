@@ -82,7 +82,7 @@ class App
                 'controller' => 'ArticlesController',
                 'action' => 'store',
             ],
-            '/articles/show' => [
+            '/articles/detail' => [
                 'method' => 'GET',
                 'controller' => 'ArticlesController',
                 'action' => 'show',
@@ -96,6 +96,11 @@ class App
                 'method' => 'POST',
                 'controller' => 'ArticlesController',
                 'action' => 'update',
+            ],
+            '/articles/delete' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'delete'
             ],
             '/tags' => [
                 'method' => 'GET',

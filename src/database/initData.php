@@ -19,7 +19,7 @@ EOF;
 
 try {
     $dbh->exec($insertTags);
-    echo "テーブルを作成しました。" . PHP_EOL;
+    echo "データを作成しました。" . PHP_EOL;
 } catch (Exception $e) {
-    echo "テーブル作成に失敗しました。" . $e->getMessage();
+    echo "データの作成に失敗しました。" . $e->getMessage();
 }

@@ -69,7 +69,7 @@ class Article
         ];
     }
 
-    public function updateArticle(string $articleId, array $form)
+    public function updateArticle(string $articleId, array $form): void
     {
         // タイトルと本文を更新
         $articleSql = <<<EOF
@@ -108,5 +108,22 @@ class Article
         EOF;
         $sth = $this->dbh->prepare($sql);
         $sth->execute($params);
+    }
+
+    public function deleteArticle(string $articleId): void
+    {
+        try {
+            $this->dbh->beginTransaction();
+            $pivotSql = 'DELETE FROM articles_tags WHERE article_id = :id';
+            $sth = $this->dbh->prepare($pivotSql);
+            $sth->execute([':id' => $articleId]);
+
+            $articleSql = 'DELETE FROM articles WHERE id = :id';
+            $sth = $this->dbh->prepare($articleSql);
+            $sth->execute([':id' => $articleId]);
+            $this->dbh->commit();
+        } catch (Exception) {
+            $this->dbh->rollBack();
+        }
     }
 }

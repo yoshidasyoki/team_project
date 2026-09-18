@@ -57,74 +57,9 @@ class ArticlesController extends Controller
     //     return Response::html($content);
     // }
 
-    public function create(): Response
-    {
-        $sql = 'SELECT id, name FROM tags;';
-        $sth = $this->dbh->prepare($sql);
-        $sth->execute();
-        $tags = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-        $content = $this->render('/articles/create.php', ['tags' => $tags]);
-        return Response::html($content);
-    }
-
-    public function store()
-    {
-        $title = $_POST['title'];
-        $tags = $_POST['tags'];
-        $body = $_POST['body'];
-
-        $articleId = $this->insertArticle($title, $body);
-        $this->insertTags($tags, $articleId);
-
-        return Response::redirect('/');
-    }
-
-    private function insertArticle(string $title, string $body): int
-    {
-        $sql = <<<EOF
-            INSERT INTO articles
-                (title, body, user_id)
-            VALUES
-                (:title, :body, :user_id)
-        EOF;
-
-        $sth = $this->dbh->prepare($sql);
-        $sth->execute([
-            ':title' => $title,
-            ':body' => $body,
-            ':user_id' => $_SESSION['user_id'],
-        ]);
-
-        return $this->dbh->lastInsertId();
-    }
-
-    private function insertTags(array $tags, int $articleId): void
-    {
-        $params = [];
-        $values = [];
-        foreach ($tags as $index => $tagId) {
-            $values[] = "(:article_id, :tag_id_$index)";
-            $params['article_id'] = "$articleId";
-            $params["tag_id_$index"] = "$tagId";
-        }
-
-        $placeholder = implode(",", $values);
-        $sql = <<<EOF
-            INSERT INTO articles_tags
-                (article_id, tag_id)
-            VALUES
-                $placeholder
-        EOF;
-
-        $sth = $this->dbh->prepare($sql);
-        $sth->execute($params);
-    }
-
     public function show(): Response
     {
-        $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-        $articleId = str_replace(["id="], "", $queryParams);
+        $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->fetchArticle($articleId);
@@ -137,8 +72,7 @@ class ArticlesController extends Controller
 
     public function edit(): Response
     {
-        $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-        $articleId = str_replace(["id="], "", $queryParams);
+        $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->fetchArticle($articleId);
@@ -150,15 +84,24 @@ class ArticlesController extends Controller
         return Response::html($content);
     }
 
-    public function update()
+    public function update(): Response
     {
         $form = $_POST;
-        $queryParams = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-        $articleId = str_replace(["id="], "", $queryParams);
+        $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
         $articleModel->updateArticle($articleId, $form);
-        return Response::redirect("/articles/show?id=$articleId");
+        return Response::redirect("/articles/detail?id=$articleId");
+    }
+
+    public function delete(): Response
+    {
+        $articleId = $this->getArticleId();
+
+        $articleModel = new Article($this->dbh);
+        $articleModel->deleteArticle($articleId);
+
+        return Response::redirect("/");
     }
 
     // 閲覧記事が投稿者本人のものであるかをチェックするメソッド
