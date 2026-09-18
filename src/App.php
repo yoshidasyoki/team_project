@@ -36,7 +36,7 @@ class App
             ]);
 
             // リクエストURIを取得してルーティングを行う
-            $accessPath = $_SERVER['REQUEST_URI'];
+            $accessPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             $route = $this->routes->getRoute($accessPath);
 
             // 認証状態に応じてアクセスできるページを制御
@@ -81,6 +81,21 @@ class App
                 'method' => 'POST',
                 'controller' => 'ArticlesController',
                 'action' => 'store',
+            ],
+            '/articles/show' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'show',
+            ],
+            '/articles/edit' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'edit',
+            ],
+            '/articles/update' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'update',
             ],
             '/tags' => [
                 'method' => 'GET',
