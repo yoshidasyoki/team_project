@@ -8,10 +8,26 @@
 </head>
 
 <body>
-    <h2>ホーム画面</h2>
+    <!-- ナビゲーションメニュー・ボタンエリア -->
+    <header class="header">
+        <div class="header-left">
+            <h2>ホーム画面</h2>
+            <p>ログインユーザー: <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?></p>
+        </div>
 
-    <!-- 例: ログイン中のユーザー名を出力 -->
-    <p>ログインユーザー: <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?></p>
+        <!-- マイページ・タグ管理のメニュー -->
+        <nav class="header-nav">
+            <ul>
+                <li><a href="/mypage">マイページ</a></li>
+                <li><a href="/tags">タグ管理</a></li>
+            </ul>
+        </nav>
+
+        <!-- 独立した新規登録ボタンエリア -->
+        <div class="header-action">
+            <a href="/articles/create" class="btn-create">＋新規登録</a>
+        </div>
+    </header>
 
 
     <div class="article-list">
