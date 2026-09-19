@@ -2,7 +2,8 @@
 :root {
     --color-primary: oklch(0.6002 0.1038 184.7);
     --color-secondary: oklch(0.7107 0.0351 256.79);
-    --button-color: background-color: oklch(0.9181 0.1123 91.78);
+    --color-base: oklch(1 0 0);
+    --button-color: oklch(0.9181 0.1123 91.78);
 }
 
 .grid-layout {
@@ -41,7 +42,7 @@
 .logo-text-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: oklch(1 0 0);
+    color: var(--color-base);
 }
 
 .logo-text-description {
@@ -55,12 +56,12 @@
 }
 
 .nav-list a {
-    color: var(--color-secondary);
+    color: var(--color-base);
 }
 
 .nav-item {
     display: block;
-    padding-top: 40px;
+    padding-top: 20px;
 }
 
 .nav-item:first-child {
@@ -73,22 +74,23 @@
     align-items: center;
     gap: 10px;
     width: 100%;
-    padding: 10px 16px;
-    font-weight: 700;
+    padding: 15px 16px;
+    font-weight: 200;
 }
 
 .nav-item a svg path {
-    stroke: var(--color-secondary);
+    stroke: var(--color-base);
+}
+
+.nav-item a.active {
+    background: linear-gradient(to right, rgba(0, 80, 65, 0.4), rgba(0, 80, 65, 0.05));
+    border-left: 3px solid var(--button-color);
+    border-radius: 15px;
 }
 
 .nav-item a:hover {
-    background-color: oklch(0.2795 0.0368 260.03);
-    color: oklch(0.7535 0.139 232.66);
-    border-radius: 10px;
-}
-
-.nav-item:hover svg path {
-    stroke: oklch(0.7535 0.139 232.66);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
 }
 
 .new-post-button-container {
@@ -105,11 +107,11 @@
     justify-content: center;
     gap: 10px;
     width: 100%;
-    padding: 10px 16px;
+    padding: 15px 16px;
     font-weight: 700;
-    background-color: oklch(0.9181 0.1123 91.78);
+    background-color: var(--button-color);;
     color: oklch(0.2795 0.0368 260.03);
-    border-radius: 10px;
+    border-radius: 15px;
 }
 
 .new-post-button-container a svg path {
@@ -119,11 +121,11 @@
 .new-post-button-container a:hover {
     /* background-color: oklch(0.7535 0.139 232.66); */
     filter: brightness(0.85);
-    color:oklch(1 0 0);
+    color:var(--color-base);
 }
 
 .new-post-button-container a:hover svg path {
-    stroke:oklch(1 0 0);
+    stroke:var(--color-base);
 }
 
 .main-container {
@@ -141,10 +143,10 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: white;
+    background-color: var(--color-base);
     /* margin: 0 auto; */
     padding: 40px 50px 24px;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     border-bottom: 1px solid oklch(0.9 0 0);
 }
@@ -224,4 +226,19 @@
     justify-content: center;
     color: var(--color-secondary);
     padding-top: 5px;
+}
+
+.header-right-container {
+    height: 2.5rem;
+}
+
+.submit-search-button {
+    color:var(--color-base)!important;
+}
+
+.search-input {
+    height: 1.8em;
+}
+.search-select {
+    justify-self: center;
 }
