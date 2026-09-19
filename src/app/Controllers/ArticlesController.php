@@ -87,7 +87,7 @@ class ArticlesController extends Controller
 
         $articleModel = new Article($this->dbh);
         $articleModel->update($articleId, $form);
-        return Response::redirect("/articles/detail?id=$articleId");
+        return Response::redirect("/");
     }
 
     public function delete(): Response

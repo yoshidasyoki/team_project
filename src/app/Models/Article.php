@@ -146,7 +146,8 @@ class Article
         // タイトルと本文を更新
         $articleSql = <<<EOF
             UPDATE articles
-            SET title = :title,
+            SET
+                title = :title,
                 body = :body
             WHERE id = :id;
         EOF;

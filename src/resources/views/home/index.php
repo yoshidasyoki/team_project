@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apprentice Log｜学びを記録し、成長を可視化する</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://kit.fontawesome.com/629369fa67.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="resources/css/style.css">
 </head>
 
@@ -172,16 +173,18 @@
                                     <form action="/articles/likes?<?= $article['id']; ?>" method="POST">
                                         <button type="submit" class="hover:cursor-pointer">
                                             <span class="flex items-center gap-1">
-                                                <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
+                                                <!-- <svg width="21" height="20" viewBox="0 0 21 20" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path
                                                         d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z"
                                                         fill="#F6B500" />
-                                                </svg> <?= $article['likes_count'] ?>
+                                                </svg> -->
+                                                <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
+                                                <?= $article['likes_count'] ?>
                                             </span>
                                         </button>
                                     </form>
-                                    <span><?= count($article['tags']??null); ?>個のタグ</span>
+                                    <span><?= count($article['tags'] ?? null); ?>個のタグ</span>
                                 </div>
                             </div>
 
