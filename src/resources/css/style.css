@@ -1,0 +1,248 @@
+/* CSS変数の定義 */
+:root {
+    --color-primary: oklch(0.6002 0.1038 184.7);
+    --color-secondary: oklch(0.7107 0.0351 256.79);
+    --color-base: oklch(1 0 0);
+    --button-color: oklch(0.9181 0.1123 91.78);
+}
+
+.grid-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: 1fr auto;
+    /* grid-template-columns: repeat(1, minmax(0, 1fr)); */
+    grid-template-areas: "aside main";
+}
+
+.aside-container {
+    width: 280px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    background-color: var(--color-primary);
+}
+
+.logo-container {
+    display: block;
+    padding: 40px 20px;
+}
+
+.logo-link {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo-container img {
+    width: 40px;
+    height: 40px;
+}
+
+.logo-text-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-base);
+}
+
+.logo-text-description {
+    font-size: 0.7rem;
+    color: var(--color-secondary);
+}
+
+.nav-list {
+    gap: 40px;
+    padding: 0 25px;
+}
+
+.nav-list a {
+    color: var(--color-base);
+}
+
+.nav-item {
+    display: block;
+    padding-top: 20px;
+}
+
+.nav-item:first-child {
+    padding: 0;
+}
+
+.nav-item a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 16px;
+    font-weight: 200;
+}
+
+.nav-item a svg path {
+    stroke: var(--color-base);
+}
+
+.nav-item a.active {
+    background: linear-gradient(to right, rgba(0, 80, 65, 0.4), rgba(0, 80, 65, 0.05));
+    border-left: 3px solid var(--button-color);
+    border-radius: 15px;
+}
+
+.nav-item a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+}
+
+.new-post-button-container {
+    padding: 0 25px;
+    bottom: 40px;
+    position: absolute;
+    width: 100%;
+}
+
+.new-post-button-container a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 16px;
+    font-weight: 700;
+    background-color: var(--button-color);;
+    color: oklch(0.2795 0.0368 260.03);
+    border-radius: 15px;
+}
+
+.new-post-button-container a svg path {
+    stroke: oklch(0.2795 0.0368 260.03);
+}
+
+.new-post-button-container a:hover {
+    /* background-color: oklch(0.7535 0.139 232.66); */
+    filter: brightness(0.85);
+    color:var(--color-base);
+}
+
+.new-post-button-container a:hover svg path {
+    stroke:var(--color-base);
+}
+
+.main-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container > main {
+    flex: 1; /* header・footer以外の余った高さをここが埋める */
+}
+
+.header-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--color-base);
+    /* margin: 0 auto; */
+    padding: 40px 50px 24px;
+    /* align-items: center; */
+    justify-content: center;
+    border-bottom: 1px solid oklch(0.9 0 0);
+}
+
+.header-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: oklch(0 0 0);
+}
+
+.header-description {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.profile-post-count-number::after {
+    content: '件';
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.profile-post-like-count-number::after {
+    content: '件';
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.post-tag-card-item-count::after {
+    content: '件';
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.footer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    padding: 24px 50px;
+    border-top: 1px solid oklch(0.9 0 0);
+}
+
+.footer-logo-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.footer-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-logo-container img {
+    width: 30px;
+    height: 30px;
+}
+
+.footer-logo-text-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: oklch(0 0 0);
+}
+
+.footer-logo-text-description {
+    font-size: 0.7rem;
+    color: var(--color-secondary);
+}
+
+.copyright {
+    display: flex;
+    justify-content: center;
+    color: var(--color-secondary);
+    padding-top: 5px;
+}
+
+.header-right-container {
+    height: 2.5rem;
+}
+
+.submit-search-button {
+    color:var(--color-base)!important;
+}
+
+.search-input {
+    height: 1.8em;
+}
+.search-select {
+    justify-self: center;
+}
+
+.sample {
+    color: red;
+}

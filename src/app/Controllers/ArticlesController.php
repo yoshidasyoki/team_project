@@ -6,7 +6,6 @@ require_once 'app/Models/Article.php';
 
 class ArticlesController extends Controller
 {
-
     // private App $app; // ★1. プロパティを追加
 
     // ★2. コンストラクタで App を受け取って代入する
@@ -21,9 +20,6 @@ class ArticlesController extends Controller
 
     public function index(): Response
     {
-
-
-
         // 1. モデルに DB 接続（$this->dbh）を渡してインスタンス化
         // $articleModel = new Article($this->dbh);
         //↓1の最新コード DatabaseConnector から getConnection() で PDO を取得
@@ -44,8 +40,6 @@ class ArticlesController extends Controller
             'articles' => $articles,
         ];
 
-
-
         // 4. home/index.php をレンダリングして返す
         $content = $this->render('/home/index.php', $variables);
         return Response::html($content);
@@ -63,20 +57,65 @@ class ArticlesController extends Controller
     //     return Response::html($content);
     // }
 
-    public function store(): Response
+    public function show(): Response
     {
-        $tag = $_POST['tag'];   // 入力値を取得
+        $articleId = $this->getArticleId();
 
-        $sql = 'INSERT INTO tags (name) VALUES (:tag)';
+        $articleModel = new Article($this->dbh);
+        $article = $articleModel->fetchArticle($articleId);
+        $content = $this->render('/articles/show.php', [
+            ...$article,
+            'isAuthor' => $this->checkAuthor($articleId),
+        ]);
+        return Response::html($content);
+    }
+
+    public function edit(): Response
+    {
+        $articleId = $this->getArticleId();
+
+        $articleModel = new Article($this->dbh);
+        $article = $articleModel->fetchArticle($articleId);
+        $tags = $this->dbh->query('SELECT id, name FROM tags')->fetchAll(PDO::FETCH_ASSOC);
+        $content = $this->render('/articles/edit.php', [
+            ...$article,
+            'tags' => $tags,
+        ]);
+        return Response::html($content);
+    }
+
+    public function update(): Response
+    {
+        $form = $_POST;
+        $articleId = $this->getArticleId();
+
+        $articleModel = new Article($this->dbh);
+        $articleModel->updateArticle($articleId, $form);
+        return Response::redirect("/articles/detail?id=$articleId");
+    }
+
+    public function delete(): Response
+    {
+        $articleId = $this->getArticleId();
+
+        $articleModel = new Article($this->dbh);
+        $articleModel->deleteArticle($articleId);
+
+        return Response::redirect("/");
+    }
+
+    // 閲覧記事が投稿者本人のものであるかをチェックするメソッド
+    private function checkAuthor(string $articleId): bool
+    {
+        $sql = 'SELECT user_id FROM articles WHERE id = :id';
         $sth = $this->dbh->prepare($sql);
-        $sth->bindValue('tag', $tag);
-        $sth->execute();
-
-        return Response::redirect('/tags');
+        $sth->execute([':id' => $articleId]);
+        $article = $sth->fetch(PDO::FETCH_ASSOC);
+        return $article['user_id'] == $_SESSION['user_id'];
     }
 
 
-    public function show(): Response
+    public function showCreate(): Response
     {
         // 1. ビューへ渡す変数を準備（必要に応じて）
         $variables = [

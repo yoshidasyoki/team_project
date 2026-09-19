@@ -63,6 +63,9 @@
             </div>
         <?php endforeach; ?>
     </div>
+    <form action="/logout" method="POST">
+        <button type="submit">ログアウト</button>
+    </form>
 </body>
 
 </html>
