@@ -108,19 +108,19 @@
                         <h3 class="post-tag font-bold">カテゴリ（タグ）</h3>
                         <p class="post-tag-description text-sm text-gray-500">記事のカテゴリを選択してください</p>
                         <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-red-50 border-red shadow-md">
+                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-red-50 border-red shadow-md cursor-pointer" onclick="toggleTag(this)">
                                 <p class="post-tag-card-item-name justify-center text-sm font-bold text-red-500">Ruby</p>
                             </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-pink-50 border-pink shadow-md">
+                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-pink-50 border-pink shadow-md cursor-pointer" onclick="toggleTag(this)">
                                 <p class="post-tag-card-item-name text-sm font-bold text-pink-500">PHP</p>
                             </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-yellow-50 border-yellow shadow-md">
+                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-yellow-50 border-yellow shadow-md cursor-pointer" onclick="toggleTag(this)">
                                 <p class="post-tag-card-item-name text-sm font-bold text-yellow-700">JavaScript</p>
                             </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-green-50 border-green shadow-md">
+                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-green-50 border-green shadow-md cursor-pointer" onclick="toggleTag(this)">
                                 <p class="post-tag-card-item-name text-sm font-bold text-green-700">Git</p>
                             </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-sky-50 border-sky shadow-md">
+                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-sky-50 border-sky shadow-md cursor-pointer" onclick="toggleTag(this)">
                                 <p class="post-tag-card-item-name text-sm font-bold text-sky-700">Docker</p>
                             </div>
                         </article>
@@ -151,5 +151,10 @@
             </footer>
         </div>
     </div>
+    <script>
+        function toggleTag(el) {
+            el.classList.toggle('selected');
+        }
+    </script>
 </body>
 </html>
