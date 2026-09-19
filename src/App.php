@@ -92,6 +92,11 @@ class App
                 'controller' => 'ArticlesController',
                 'action' => 'delete'
             ],
+            '/articles/likes' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'likesCount',
+            ],
             '/mypage' => [
                 'method' => 'GET',
                 'controller' => 'UsersController',

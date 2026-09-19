@@ -45,6 +45,14 @@ class ArticlesController extends Controller
         return Response::html($content);
     }
 
+    public function likesCount(): Response
+    {
+        $articlesId = $this->getArticleId();
+        $articlesModel = new Article($this->dbh);
+        $articlesModel->likesCount($articlesId);
+        return Response::redirect('/');
+    }
+
     public function show(): Response
     {
         $articleId = $this->getArticleId();

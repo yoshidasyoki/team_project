@@ -16,7 +16,7 @@ class Article
             SELECT
                 a.id,
                 a.title,
-                a.created_at,
+                a.updated_at,
                 a.likes_count,
                 u.name AS author_name,
                 GROUP_CONCAT(t.name) AS tags
@@ -28,13 +28,48 @@ class Article
             LEFT JOIN tags t
                 ON at.tag_id = t.id
             GROUP BY a.id
-            ORDER BY a.created_at DESC
+            ORDER BY a.updated_at DESC
         ";
 
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 取得したタグを配列形式に変換
+        $articles = [];
+        foreach ($rows as $row) {
+            $id = $row['id'];
+            if (!isset($articles[$id])) {
+                $articles[$id] = [
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'updated_at' => $row['updated_at'],
+                    'likes_count' => $row['likes_count'],
+                    'author_name' => $row['author_name'],
+                ];
+            }
+
+            if ($row['tags']) {
+                $articles[$id]['tags'] = explode(',', $row['tags']);
+            } else {
+                $articles[$id]['tags'] = [];
+            }
+        }
+
+        return $articles;
+    }
+
+    public function likesCount(string $articleId): void
+    {
+        $sql = <<<EOF
+            UPDATE articles
+            SET
+                likes_count = likes_count + 1,
+                updated_at = updated_at
+            WHERE id = :id
+        EOF;
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute([':id' => $articleId]);
     }
 
     public function findAllByUser(string $userId): array
@@ -42,9 +77,9 @@ class Article
         $sql = <<<EOF
             SELECT a.id, a.title, a.likes_count, t.name AS tag, a.updated_at
             FROM articles AS a
-            INNER JOIN articles_tags AS at
+            LEFT JOIN articles_tags AS at
                 ON a.id = at.article_id
-            INNER JOIN tags as t
+            LEFT JOIN tags as t
                 ON t.id = at.tag_id
             WHERE user_id = :user_id;
         EOF;
