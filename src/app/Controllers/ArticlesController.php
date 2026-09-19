@@ -44,7 +44,7 @@ class ArticlesController extends Controller
             'articles' => $articles,
         ];
 
-        
+
 
         // 4. home/index.php をレンダリングして返す
         $content = $this->render('/home/index.php', $variables);
@@ -73,5 +73,19 @@ class ArticlesController extends Controller
         $sth->execute();
 
         return Response::redirect('/tags');
+    }
+
+
+    public function show(): Response
+    {
+        // 1. ビューへ渡す変数を準備（必要に応じて）
+        $variables = [
+            'username' => $_SESSION['username'] ?? 'Guest',
+        ];
+
+        // 2. renderメソッドを使ってHTMLを生成し、Responseオブジェクトとして返す
+        // ※ビューファイルの配置場所に合わせてパスを調整してください (例: /articles/create.php)
+        $content = $this->render('/articles/create.php', $variables);
+        return Response::html($content);
     }
 }

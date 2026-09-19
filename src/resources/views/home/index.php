@@ -19,13 +19,15 @@
         <nav class="header-nav">
             <ul>
                 <li><a href="/mypage">マイページ</a></li>
-                <li><a href="/tags">タグ管理</a></li>
+                <!-- ↑マイページのファイル名決まり次第、書き換える -->
+                <li><a href="/tags/index.php">タグ管理</a></li>
             </ul>
         </nav>
 
         <!-- 独立した新規登録ボタンエリア -->
         <div class="header-action">
-            <a href="/articles/create" class="btn-create">＋新規登録</a>
+            <!-- 新規作成ボタン（create.php へ遷移するリンク） -->
+            <a href="/article/create" class="btn-create">＋新規登録</a>
         </div>
     </header>
 
@@ -48,6 +50,10 @@
                     <a href="/articles/detail?id=<?= urlencode($article['id']) ?>">
                         <?= htmlspecialchars($article['title']) ?>
                     </a>
+                    <!-- <a href="article.php?id=<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
+                        <?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?>
+                    </a> -->
+                    <!-- 上記どちらか書く -->
                 </h2>
 
                 <div class="article-footer">

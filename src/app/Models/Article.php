@@ -21,7 +21,7 @@ class Article
                 u.name AS author_name,
                 GROUP_CONCAT(t.name) AS tags
             FROM articles a
-            JOIN users u 
+            JOIN users u    
                 ON a.users_id = u.id
             LEFT JOIN articles_tags at 
                 ON a.id = at.articles_id
