@@ -45,24 +45,12 @@ class ArticlesController extends Controller
         return Response::html($content);
     }
 
-
-    // public function index(): Response
-    // {
-    //     $sql = 'SELECT name FROM articles;';
-    //     $sth = $this->dbh->prepare($sql);
-    //     $sth->execute();
-    //     $articles = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-    //     $content = $this->render('/home/index.php', ['articles' => $articles]);
-    //     return Response::html($content);
-    // }
-
     public function show(): Response
     {
         $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
-        $article = $articleModel->fetchArticle($articleId);
+        $article = $articleModel->find($articleId);
         $content = $this->render('/articles/show.php', [
             ...$article,
             'isAuthor' => $this->checkAuthor($articleId),
@@ -75,7 +63,7 @@ class ArticlesController extends Controller
         $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
-        $article = $articleModel->fetchArticle($articleId);
+        $article = $articleModel->find($articleId);
         $tags = $this->dbh->query('SELECT id, name FROM tags')->fetchAll(PDO::FETCH_ASSOC);
         $content = $this->render('/articles/edit.php', [
             ...$article,
@@ -90,7 +78,7 @@ class ArticlesController extends Controller
         $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
-        $articleModel->updateArticle($articleId, $form);
+        $articleModel->update($articleId, $form);
         return Response::redirect("/articles/detail?id=$articleId");
     }
 
@@ -99,7 +87,7 @@ class ArticlesController extends Controller
         $articleId = $this->getArticleId();
 
         $articleModel = new Article($this->dbh);
-        $articleModel->deleteArticle($articleId);
+        $articleModel->delete($articleId);
 
         return Response::redirect("/");
     }

@@ -13,27 +13,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記事閲覧</title>
+    <title>Apprentice Log｜学びを記録し、成長を可視化する</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="/resources/css/style.css">
 </head>
 
 <body>
-    <h2>記事閲覧ページ</h2>
-    <p>タイトル</p>
-    <p><?= $title ?></p>
-    <p>本文</p>
-    <p><?= $body ?></p>
-    <p>タグ</p>
-    <ul>
-        <?php foreach ($checkedTags as $checkedTag) :?>
-            <li><?= $checkedTag['id'] . ':' . $checkedTag['name'] ?></li>
-        <?php endforeach; ?>
-    </ul>
+    <div class="grid-layout">
+        <aside class="aside-container">
+            <h1 class="logo-container">
+                <a href="/" class="logo-link">
+                    <div class="logo-img">
+                        <img src="/resources/img/logo.png" alt="Apprentice Log">
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-text-title">Apprentice Log</span>
+                        <p class="logo-text-description">Apprentice生のためのテックブログ</p>
+                    </div>
+                </a>
+            </h1>
 
-    <?php if ($isAuthor) : ?>
-    <a href="/articles/edit?id=<?= $id ?>">編集する</a>
-    <form action="/articles/delete?id=<?= $id ?>" method="POST">
-        <button type="submit">削除する</button></form>
-    <?php endif; ?>
+            <div class="nav-list">
+                <ul>
+                    <li class="nav-item">
+                        <a href="/">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_19)">
+                                    <path d="M12.5 17.4993V10.8327C12.5 10.6117 12.4122 10.3997 12.2559 10.2434C12.0996 10.0871 11.8877 9.99935 11.6667 9.99935H8.33333C8.11232 9.99935 7.90036 10.0871 7.74408 10.2434C7.5878 10.3997 7.5 10.6117 7.5 10.8327V17.4993M2.5 8.33308C2.49994 8.09064 2.55278 7.8511 2.65482 7.63118C2.75687 7.41126 2.90566 7.21625 3.09083 7.05975L8.92417 2.05975C9.22499 1.80551 9.60613 1.66602 10 1.66602C10.3939 1.66602 10.775 1.80551 11.0758 2.05975L16.9092 7.05975C17.0943 7.21625 17.2431 7.41126 17.3452 7.63118C17.4472 7.8511 17.5001 8.09064 17.5 8.33308V15.8331C17.5 16.2751 17.3244 16.699 17.0118 17.0116C16.6993 17.3242 16.2754 17.4997 15.8333 17.4997H4.16667C3.72464 17.4997 3.30072 17.3242 2.98816 17.0116C2.67559 16.699 2.5 16.2751 2.5 15.8331V8.33308Z" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_19">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>ホーム</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/mypage">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_24)">
+                                    <path d="M15.8321 17.5V15.8333C15.8321 14.9493 15.4808 14.1014 14.8556 13.4763C14.2304 12.8512 13.3825 12.5 12.4983 12.5H7.49778C6.61362 12.5 5.76568 12.8512 5.14048 13.4763C4.51529 14.1014 4.16406 14.9493 4.16406 15.8333V17.5M13.3318 5.83333C13.3318 7.67428 11.8392 9.16667 9.99806 9.16667C8.1569 9.16667 6.66435 7.67428 6.66435 5.83333C6.66435 3.99238 8.1569 2.5 9.99806 2.5C11.8392 2.5 13.3318 3.99238 13.3318 5.83333Z" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_24">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>マイページ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/tags">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_29)">
+                                    <g clip-path="url(#clip1_236_29)">
+                                        <path d="M9.30803 1.66602C9.75006 1.66611 10.174 1.84178 10.4865 2.15439L17.7404 9.40833C18.1168 9.78712 18.3281 10.2994 18.3281 10.8334C18.3281 11.3675 18.1168 11.8798 17.7404 12.2586L12.2566 17.7424C11.8778 18.1188 11.3655 18.33 10.8315 18.33C10.2975 18.33 9.78517 18.1188 9.40637 17.7424L2.15244 10.4884C1.83983 10.1759 1.66416 9.75201 1.66406 9.30999V3.33282C1.66406 2.89076 1.83967 2.4668 2.15226 2.15421C2.46485 1.84162 2.8888 1.66602 3.33087 1.66602H9.30803Z" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_29">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                    <clipPath id="clip1_236_29">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>タグ管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="new-post-button-container">
+                <a href="#">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_251_173)">
+                            <path d="M3.75 8.99999H14.2512M9.0006 3.74939V14.2506" stroke="white" stroke-width="2" stroke-linecap="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_251_173">
+                                <rect width="18" height="18" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <span>新規投稿</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main-container">
+            <header class="header-container">
+                <h1 class="header-title">記事詳細</h1>
+                <p class="header-description">記事の詳細を確認いただけます</p>
+            </header>
+
+            <main class="px-16 py-12 text-gray-700">
+                <section class="flex flex-col gap-6 mb-12">
+                    <div class="flex flex-col gap-2">
+                        <h2 class="font-bold text-gray-500">タイトル</h2>
+                        <p class="border border-gray-300 px-4 py-1.5 rounded-sm"><?= $title ?></p>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <h2 class="font-bold text-gray-500">カテゴリ（タグ）</h2>
+                        <div class="flex gap-4">
+                            <?php foreach ($checkedTags as $checkedTag) : ?>
+                                <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-5 py-2.5 rounded-md">
+                                    <?= $checkedTag['name'] ?>
+                                </span>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <h2 class="font-bold text-gray-500">本文</h2>
+                        <p class="border border-gray-300 px-4 py-1.5 rounded-sm break-all">
+                            <?= $body ?>
+                        </p>
+                    </div>
+                </section>
+
+                <div class="flex justify-between">
+                    <div>
+                        <a href="/" class="py-2.5 px-4 bg-gray-400 hover:bg-gray-500 text-white text-sm rounded-md">キャンセル</a>
+                    </div>
+                    <div class="flex gap-3">
+                        <?php if ($isAuthor) : ?>
+                            <a href="/articles/edit?id=<?= $id ?>"
+                                class="py-2.5 px-4 bg-gray-400 hover:bg-gray-500 text-white text-sm rounded-md">編集する</a>
+                            <form action="/articles/delete?id=<?= $id ?>"
+                                method="POST"
+                                onsubmit="return confirm('削除してよろしいですか？');">
+                                <button type="submit" class="py-2.5 px-4 bg-gray-400 hover:bg-gray-500 text-white text-sm rounded-md">削除する</button>
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </main>
+            <footer></footer>
+        </div>
+    </div>
 </body>
 
 </html>
