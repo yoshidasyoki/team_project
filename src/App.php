@@ -92,6 +92,11 @@ class App
                 'controller' => 'ArticlesController',
                 'action' => 'delete'
             ],
+            '/mypage' => [
+                'method' => 'GET',
+                'controller' => 'UsersController',
+                'action' => 'index'
+            ],
             '/tags' => [
                 'method' => 'GET',
                 'controller' => 'TagsController',
@@ -126,7 +131,7 @@ class App
                 'controller' => 'UsersController',
                 'action' => 'create',
             ],
-            '/users/create/store' => [
+            '/users/store' => [
                 'method' => 'POST',
                 'controller' => 'UsersController',
                 'action' => 'store',

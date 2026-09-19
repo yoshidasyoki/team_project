@@ -18,7 +18,7 @@ class AuthController extends Controller
         $sth->execute([':name' => $username]);
         $user = $sth->fetch(PDO::FETCH_ASSOC);
 
-        if (password_verify($password, $user['password'])) {
+        if (!empty($user) && password_verify($password, $user['password'])) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['name'];

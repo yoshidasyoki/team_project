@@ -5,6 +5,12 @@ require_once 'app/Response.php';
 
 class UsersController extends Controller
 {
+    public function index(): Response
+    {
+        $content = $this->render('/users/index.php');
+        return Response::html($content);
+    }
+
     public function create(): Response
     {
         $content = $this->render('/users/create.php');
