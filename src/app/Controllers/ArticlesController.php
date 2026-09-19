@@ -45,18 +45,6 @@ class ArticlesController extends Controller
         return Response::html($content);
     }
 
-
-    // public function index(): Response
-    // {
-    //     $sql = 'SELECT name FROM articles;';
-    //     $sth = $this->dbh->prepare($sql);
-    //     $sth->execute();
-    //     $articles = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-    //     $content = $this->render('/home/index.php', ['articles' => $articles]);
-    //     return Response::html($content);
-    // }
-
     public function show(): Response
     {
         $articleId = $this->getArticleId();
