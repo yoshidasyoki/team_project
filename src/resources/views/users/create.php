@@ -26,7 +26,7 @@
 
         <!-- エラーメッセージの表示 -->
         <ul>
-            <?php if ($_SESSION['flashMessage']) : ?>
+            <?php if ($_SESSION['flashMessage']??null) : ?>
                 <?php foreach ($_SESSION['flashMessage']['errors'] as $error) : ?>
                     <li class="px-3 pb-3 text-red-700">※ <?= $error ?></li>
                 <?php endforeach; ?>
