@@ -1,3 +1,11 @@
+<?php
+
+/** @var int $postingCounts */
+/** @var int $goodCounts */
+/** @var array $tags */
+/** @var array $articles */
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -102,7 +110,9 @@
             <main class="p-8 grid grid-cols-1 gap-8">
                 <section class="profile-container m0-auto p-8 bg-white rounded-2xl grid grid-cols-2 gap-4 border border-gray-200">
                     <div class="profile-name-container">
-                        <h2 class="profile-name text-2xl font-bold">ユーザー1</h2>
+                        <h2 class="profile-name text-2xl font-bold">
+                            <?= $_SESSION['username'] ?>
+                        </h2>
                         <p class="profile-class-name">Apprentice 14期生</p>
                         <p class="profile-name-description text-sm text-gray-500 mt-2">プログラミングと技術が大好きです。<br>
                             日々学んだことや気づきをアウトプットして、<br>
@@ -113,16 +123,32 @@
                         <div class="profile-post-count-container flex flex-col items-center justify-center">
                             <img src="resources/img/icon-post-count.png" alt="投稿数" class="w-16 h-16">
                             <p class="profile-post-count text-sm text-gray-500">投稿数</p>
-                            <p class="profile-post-count-number text-4xl font-bold">100</p>
+                            <p class="profile-post-count-number text-4xl font-bold">
+                                <?= $postingCounts; ?>
+                            </p>
                         </div>
                         <div class="profile-post-like-count-container flex flex-col items-center justify-center">
                             <img src="resources/img/icon-like-count.png" alt="いいね数" class="w-16 h-16">
                             <p class="profile-post-like-count text-sm text-gray-500">いいね数</p>
-                            <p class="profile-post-like-count-number text-4xl font-bold">50</p>
+                            <p class="profile-post-like-count-number text-4xl font-bold">
+                                <?= $goodCounts ?>
+                            </p>
                         </div>
                     </div>
                 </section>
+
                 <section class="post-tag-card-container m0-auto p-8 bg-white rounded-2xl flex grid grid-cols-8 gap-4 border border-gray-200">
+                    <?php foreach ($tags as $tag) : ?>
+                        <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-red-50 border-red shadow-md">
+                            <p class="post-tag-card-item-name text-sm font-bold text-red-500">
+                                <?= $tag['name'] ?>
+                            </p>
+                            <p class="post-tag-card-item-count font-bold text-2xl">
+                                <?= $tag['count'] ?>
+                            </p>
+                        </div>
+                    <?php endforeach; ?>
+                    <!--
                     <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-red-50 border-red shadow-md">
                         <p class="post-tag-card-item-name text-sm font-bold text-red-500">Ruby</p>
                         <p class="post-tag-card-item-count font-bold text-2xl">20</p>
@@ -142,9 +168,73 @@
                     <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-sky-50 border-sky shadow-md">
                         <p class="post-tag-card-item-name text-sm font-bold text-sky-700">Docker</p>
                         <p class="post-tag-card-item-count font-bold text-2xl">1</p>
-                    </div>
+                    </div> -->
                 </section>
+
                 <section class="latest-post flex flex-col gap-4">
+                    <h2 class="latest-post-title text-2xl font-bold">最新の投稿</h2>
+
+                    <!-- 投稿記事をカード形式で表示 -->
+                    <?php foreach ($articles as $article) : ?>
+                        <article class="flex flex-col gap-3 bg-white rounded-xl px-12 py-8 border border-gray-200">
+
+                            <div class="flex gap-2">
+                                <?php foreach ($article['tags'] as $tag) : ?>
+                                    <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
+                                        <?= $tag ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <section class="flex items-start gap-4 ">
+                                <div class="flex-1 min-w-0">
+                                    <a href="/articles/detail?id=<?= $article['id'] ?>" class="latest-post-title font-bold truncate">
+                                        <?= $article['title'] ?>
+                                    </a>
+                                    <p class="latest-post-title font-bold truncate">
+                                    </p>
+                                    <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
+                                        <span class="flex items-center gap-1">
+                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z" fill="#F6B500" />
+                                            </svg> <?= $article['likes_count'] ?></span>
+                                        <span><?= count($article['tags']) ?>個のタグ</span>
+                                    </div>
+                                </div>
+                                <span class="text-sm text-gray-400 whitespace-nowrap">10時間前</span>
+                                <svg class="align-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
+                                </svg>
+                            </section>
+                        </article>
+                    <?php endforeach; ?>
+
+                </section>
+
+            </main>
+            <footer class="footer-container">
+                <h3 class="footer-logo-container">
+                    <a href="/" class="footer-logo-link">
+                        <div class="footer-logo-img">
+                            <img src="resources/img/logo-green.svg" alt="Apprentice Log">
+                        </div>
+                        <div class="footer-logo-text">
+                            <span class="footer-logo-text-title">Apprentice Log</span>
+                            <p class="footer-logo-text-description">Apprentice生のためのテックブログ</p>
+                        </div>
+                    </a>
+                </h3>
+                <p class="copyright">© 2026 Apprentice Log</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>
+
+
+
+<!-- <section class="latest-post flex flex-col gap-4">
                     <h2 class="latest-post-title text-2xl font-bold">最新の投稿</h2>
                     <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
                         <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
@@ -209,24 +299,4 @@
                             <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
                         </svg>
                     </article>
-                </section>
-            </main>
-            <footer class="footer-container">
-                <h3 class="footer-logo-container">
-                    <a href="/" class="footer-logo-link">
-                        <div class="footer-logo-img">
-                            <img src="resources/img/logo-green.svg" alt="Apprentice Log">
-                        </div>
-                        <div class="footer-logo-text">
-                            <span class="footer-logo-text-title">Apprentice Log</span>
-                            <p class="footer-logo-text-description">Apprentice生のためのテックブログ</p>
-                        </div>
-                    </a>
-                </h3>
-                <p class="copyright">© 2026 Apprentice Log</p>
-            </footer>
-        </div>
-    </div>
-</body>
-
-</html>
+                </section> -->

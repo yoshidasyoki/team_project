@@ -2,12 +2,26 @@
 
 require_once 'app/Controllers/Controller.php';
 require_once 'app/Response.php';
+require_once 'app/Models/Article.php';
 
 class UsersController extends Controller
 {
     public function index(): Response
     {
-        $content = $this->render('/users/index.php');
+        $tags = $this->getPostedArticleByTags($_SESSION['user_id']);
+
+        $articleModel = new Article($this->dbh);
+        $articles = $articleModel->findAllByUser($_SESSION['user_id']);
+
+        $postingCounts = count($articles);
+        $goodCounts = array_sum(array_map(fn($item) => $item['likes_count'], $articles));
+
+        $content = $this->render('/users/index.php', [
+            'postingCounts' => $postingCounts,
+            'goodCounts' => $goodCounts,
+            'articles' => $articles,
+            'tags' => $tags,
+        ]);
         return Response::html($content);
     }
 
@@ -62,5 +76,23 @@ class UsersController extends Controller
         $sth->execute();
         $user = $sth->fetchAll(PDO::FETCH_ASSOC);
         return !empty($user);
+    }
+
+    // 指定したユーザのタグごとの投稿数を取得するメソッド
+    private function getPostedArticleByTags(string $userId): array
+    {
+        $sql = <<<EOF
+            SELECT t.name, count(*) AS count
+            FROM articles_tags AS at
+            INNER JOIN tags AS t
+                ON t.id = at.tag_id
+            INNER JOIN articles AS a
+                ON a.id = article_id
+            WHERE a.user_id = :user_id
+            GROUP BY a.user_id, at.tag_id;
+        EOF;
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute(['user_id' => $userId]);
+        return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 }
