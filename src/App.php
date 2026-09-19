@@ -6,11 +6,11 @@ require_once 'app/View.php';
 require_once 'app/DatabaseConnector.php';
 require_once 'app/Middlewares/AuthMiddleware.php';
 
-require_once 'app/Controllers/TestController.php';
+require_once 'app/Controllers/ArticlesController.php';
 require_once 'app/Controllers/AuthController.php';
 require_once 'app/Controllers/UsersController.php';
 require_once 'app/Controllers/TagsController.php';
-require_once 'app/Controllers/ArticlesController.php';
+require_once 'app/Controllers/TestController.php';
 
 class App
 {
@@ -36,7 +36,7 @@ class App
             ]);
 
             // リクエストURIを取得してルーティングを行う
-            $accessPath = $_SERVER['REQUEST_URI'];
+            $accessPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             $route = $this->routes->getRoute($accessPath);
 
             // 認証状態に応じてアクセスできるページを制御
@@ -70,6 +70,31 @@ class App
             '/' => [
                 'method' => 'GET',
                 'controller' => 'ArticlesController',
+                'action' => 'index'
+            ],
+            '/articles/detail' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'show',
+            ],
+            '/articles/edit' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'edit',
+            ],
+            '/articles/update' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'update',
+            ],
+            '/articles/delete' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'delete'
+            ],
+            '/mypage' => [
+                'method' => 'GET',
+                'controller' => 'UsersController',
                 'action' => 'index'
             ],
             '/tags' => [
@@ -106,7 +131,7 @@ class App
                 'controller' => 'UsersController',
                 'action' => 'create',
             ],
-            '/users/create/store' => [
+            '/users/store' => [
                 'method' => 'POST',
                 'controller' => 'UsersController',
                 'action' => 'store',
