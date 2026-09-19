@@ -246,3 +246,7 @@
 .sample {
     color: red;
 }
+
+.post-title-input {
+    height: 3em;
+}
