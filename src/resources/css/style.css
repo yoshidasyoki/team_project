@@ -246,3 +246,15 @@
 .sample {
     color: red;
 }
+
+.post-title-input {
+    height: 3em;
+}
+
+.post-tag-card-item.selected {
+    opacity: 1;
+}
+
+.post-tag-card-item:not(.selected) {
+    opacity: 0.5;
+}
