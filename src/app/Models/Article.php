@@ -9,14 +9,14 @@ class Article
         $this->dbh = $dbh;
     }
 
-    public function getHome(): array
+    public function getHome(array $option = []): array
     {
         // 記事・ユーザー・中間テーブル・タグを一括で結合し、グループ化して取得
         $sql = "
             SELECT
                 a.id,
                 a.title,
-                a.created_at,
+                a.updated_at,
                 a.likes_count,
                 u.name AS author_name,
                 GROUP_CONCAT(t.name) AS tags
@@ -28,13 +28,150 @@ class Article
             LEFT JOIN tags t
                 ON at.tag_id = t.id
             GROUP BY a.id
-            ORDER BY a.created_at DESC
+            ORDER BY a.updated_at DESC
         ";
 
         $stmt = $this->dbh->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 取得したタグを配列形式に変換
+        $articles = [];
+        foreach ($rows as $row) {
+            $id = $row['id'];
+            if (!isset($articles[$id])) {
+                $articles[$id] = [
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'updated_at' => $row['updated_at'],
+                    'likes_count' => $row['likes_count'],
+                    'author_name' => $row['author_name'],
+                ];
+            }
+
+            if ($row['tags']) {
+                $articles[$id]['tags'] = explode(',', $row['tags']);
+            } else {
+                $articles[$id]['tags'] = [];
+            }
+        }
+
+        return $articles;
+    }
+
+    public function likesCount(string $articleId): void
+    {
+        $sql = <<<EOF
+            UPDATE articles
+            SET
+                likes_count = likes_count + 1,
+                updated_at = updated_at
+            WHERE id = :id
+        EOF;
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute([':id' => $articleId]);
+    }
+
+    public function findByTag(string $tagName): array
+    {
+        // 記事・ユーザー・中間テーブル・タグを一括で結合し、グループ化して取得
+        $sql = <<<EOF
+            WITH search_results AS (
+                SELECT a.id
+                FROM articles AS a
+                INNER JOIN articles_tags AS at
+                    ON a.id = at.article_id
+                INNER JOIN tags AS t
+                    ON t.id = at.tag_id
+                WHERE t.name LIKE :tag_name
+            )
+            SELECT a.id, a.title, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tags
+            FROM articles AS a
+                INNER JOIN articles_tags AS at
+                    ON a.id = at.article_id
+            INNER JOIN tags AS t
+                ON t.id = at.tag_id
+            INNER JOIN users AS u
+                ON u.id = a.user_id
+            WHERE a.id IN (
+                SELECT id from search_results
+            );
+        EOF;
+
+        $stmt = $this->dbh->prepare($sql);
+        $stmt->execute([':tag_name' => '%' . $tagName . '%']);
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // 取得したタグを配列形式に変換
+        $articles = [];
+        foreach ($rows as $row) {
+            $id = $row['id'];
+            if (!isset($articles[$id])) {
+                $articles[$id] = [
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'updated_at' => $row['updated_at'],
+                    'likes_count' => $row['likes_count'],
+                    'author_name' => $row['author_name'],
+                ];
+            }
+
+            if ($row['tags']) {
+                $articles[$id]['tags'][] = $row['tags'];
+            } else {
+                $articles[$id]['tags'] = [];
+            }
+        }
+
+        return $articles;
+    }
+
+    public function findByKeyword(string $keyword): array
+    {
+        $sql = <<<EOF
+            WITH search_results AS (
+            SELECT id
+            FROM articles
+            WHERE title COLLATE utf8mb4_0900_as_cs LIKE :keyword
+                OR body COLLATE utf8mb4_0900_as_cs LIKE :keyword
+            )
+            SELECT a.id, a.title, a.body, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tag
+            FROM articles AS a
+                INNER JOIN articles_tags AS at
+                    ON a.id = at.article_id
+            INNER JOIN tags AS t
+                ON t.id = at.tag_id
+            INNER JOIN users AS u
+                ON u.id = a.user_id
+            WHERE a.id IN (
+                SELECT id from search_results
+            );
+        EOF;
+
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute([':keyword' => '%' . $keyword . '%']);
+        $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        $articles = [];
+
+        foreach ($rows as $row) {
+            $id = $row['id'];
+
+            if (!isset($articles[$id])) {
+                $articles[$id] = [
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'likes_count' => $row['likes_count'],
+                    'author_name' => $row['author_name'],
+                    'tags' => [],
+                    'updated_at' => $row['updated_at'],
+                ];
+            }
+
+            $articles[$id]['tags'][] = $row['tag'];
+        }
+
+        return array_values($articles);
     }
 
     public function findAllByUser(string $userId): array
@@ -42,9 +179,9 @@ class Article
         $sql = <<<EOF
             SELECT a.id, a.title, a.likes_count, t.name AS tag, a.updated_at
             FROM articles AS a
-            INNER JOIN articles_tags AS at
+            LEFT JOIN articles_tags AS at
                 ON a.id = at.article_id
-            INNER JOIN tags as t
+            LEFT JOIN tags as t
                 ON t.id = at.tag_id
             WHERE user_id = :user_id;
         EOF;
@@ -111,7 +248,8 @@ class Article
         // タイトルと本文を更新
         $articleSql = <<<EOF
             UPDATE articles
-            SET title = :title,
+            SET
+                title = :title,
                 body = :body
             WHERE id = :id;
         EOF;
@@ -169,3 +307,44 @@ class Article
         }
     }
 }
+
+
+
+// WITH search_results AS (
+//     SELECT id
+//     FROM articles
+//     WHERE title COLLATE utf8mb4_0900_as_cs LIKE '%テス%'
+//         OR body COLLATE utf8mb4_0900_as_cs LIKE '%テス%'
+// )
+// SELECT a.id, a.title, a.body, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tags
+// FROM articles AS a
+//     INNER JOIN articles_tags AS at
+//         ON a.id = at.article_id
+// INNER JOIN tags AS t
+//     ON t.id = at.tag_id
+// INNER JOIN users AS u
+//     ON u.id = a.user_id
+// WHERE a.id IN (
+//     SELECT id from search_results
+// );
+
+// WITH search_results AS (
+//                 SELECT a.id
+//                 FROM articles AS a
+//                 INNER JOIN articles_tags AS at
+//                     ON a.id = at.article_id
+//                 INNER JOIN tags AS t
+//                     ON t.id = at.tag_id
+//                 WHERE t.name = :tag_name
+//             )
+//             SELECT a.id, a.title, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tags
+//             FROM articles AS a
+//                 INNER JOIN articles_tags AS at
+//                     ON a.id = at.article_id
+//             INNER JOIN tags AS t
+//                 ON t.id = at.tag_id
+//             INNER JOIN users AS u
+//                 ON u.id = a.user_id
+//             WHERE a.id IN (
+//                 SELECT id from search_results
+//             );
