@@ -37,6 +37,7 @@ class Article
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
     // Article.php 内へ追加
 
     public function storeArticle(array $form, string $userId): void //←: voidは、return でデータを出力しない
@@ -84,7 +85,46 @@ class Article
         }
     }
 
-    public function fetchArticle(string $articleId): array
+
+    public function findAllByUser(string $userId): array
+    {
+        $sql = <<<EOF
+            SELECT a.id, a.title, a.likes_count, t.name AS tag, a.updated_at
+            FROM articles AS a
+            INNER JOIN articles_tags AS at
+                ON a.id = at.article_id
+            INNER JOIN tags as t
+                ON t.id = at.tag_id
+            WHERE user_id = :user_id;
+        EOF;
+
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute([':user_id' => $userId]);
+        $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+        $articles = [];
+
+        foreach ($rows as $row) {
+            $id = $row['id'];
+
+            if (!isset($articles[$id])) {
+                $articles[$id] = [
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'likes_count' => $row['likes_count'],
+                    'tags' => [],
+                    'updated_at' => $row['updated_at'],
+                ];
+            }
+
+            $articles[$id]['tags'][] = $row['tag'];
+        }
+
+        return array_values($articles);
+    }
+
+    public function find(string $articleId): array
+
     {
         // タイトルと本文（articlesテーブルの情報）を取得
         $articleSql = <<<EOF
@@ -116,7 +156,7 @@ class Article
         ];
     }
 
-    public function updateArticle(string $articleId, array $form): void
+    public function update(string $articleId, array $form): void
     {
         // タイトルと本文を更新
         $articleSql = <<<EOF
@@ -162,7 +202,7 @@ class Article
         $sth->execute($params);
     }
 
-    public function deleteArticle(string $articleId): void
+    public function delete(string $articleId): void
     {
         try {
             $this->dbh->beginTransaction();
