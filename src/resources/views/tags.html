@@ -97,12 +97,12 @@
                 <h1 class="header-title">タグ管理</h1>
                 <p class="header-description">タグを管理して、記事の整理を行います</p>
             </header>
-            <main class="p-8 grid grid-cols-1 gap-8 overflow-hidden">
-                <div class="new-post-container bg-white rounded-xl border border-gray-200 p-8">
+            <main class="p-8 grid grid-cols-1 gap-8 items-start">
+                <div class="tag-container bg-white rounded-xl border border-gray-200 p-8">
                     <h3 class="post-tag font-bold">タグを入力</h3>
-                    <div class="input-tag-container flex items-stretch rounded-lg overflow-hidden gap-4 pt-8">
-                        <form class="rounded-lg overflow-hidden hover:opacity-80" action="検索結果の送信先URL" method="get">
-                            <input class="input-tag w-70% pl-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" id="title" name="title" placeholder="記事のタイトルを入力してください">
+                    <div class="input-tag-container flex items-stretch rounded-lg gap-4 pt-8">
+                        <form class="w-[70%] rounded-lg hover:opacity-80" action="検索結果の送信先URL" method="get">
+                            <input class="input-tag w-full pl-4 py-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" id="title" name="title" placeholder="記事のタイトルを入力してください">
                         </form>
                         <button class="submit-search-button bg-[var(--button-color)] text-white rounded-lg px-6 text-sm hover:opacity-80" type="submit">追加</button>
                     </div>
