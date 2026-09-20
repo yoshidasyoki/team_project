@@ -21,21 +21,12 @@ class Article
                 u.name AS author_name,
                 GROUP_CONCAT(t.name) AS tags
             FROM articles a
-<<<<<<< HEAD
-            JOIN users u    
-                ON a.users_id = u.id
-            LEFT JOIN articles_tags at 
-                ON a.id = at.articles_id
-            LEFT JOIN tags t 
-                ON at.tags_id = t.id
-=======
             JOIN users u
                 ON a.user_id = u.id
             LEFT JOIN articles_tags at
                 ON a.id = at.article_id
             LEFT JOIN tags t
                 ON at.tag_id = t.id
->>>>>>> 406c5c7526de6f4921de80b6b71f09b89049ff71
             GROUP BY a.id
             ORDER BY a.created_at DESC
         ";
@@ -44,6 +35,53 @@ class Article
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Article.php 内へ追加
+
+    public function storeArticle(array $form, string $userId): void //←: voidは、return でデータを出力しない
+    {
+        try {
+            $this->dbh->beginTransaction();
+
+            // 1. articles テーブルへの保存
+            $articleSql = "
+                INSERT INTO articles (user_id, title, body, created_at)
+                VALUES (:user_id, :title, :body, NOW());
+            ";
+
+            $sth = $this->dbh->prepare($articleSql);
+            $sth->execute([
+                ':user_id' => $userId,
+                ':title'   => $form['title'],
+                ':body'    => $form['body'],
+            ]);
+
+            // 保存した記事のIDを取得
+            $articleId = $this->dbh->lastInsertId();
+
+            // 2. タグが選択されている場合は articles_tags (中間テーブル) に保存
+            if (!empty($form['tags']) && is_array($form['tags'])) {
+                $params = [':article_id' => $articleId];
+                $values = [];
+
+                foreach ($form['tags'] as $index => $tagId) {
+                    $values[] = "(:article_id, :tag_id_$index)";
+                    $params["tag_id_$index"] = $tagId;
+                }
+
+                $placeholder = implode(',', $values);
+                $tagSql = "INSERT INTO articles_tags (article_id, tag_id) VALUES $placeholder";
+
+                $sth = $this->dbh->prepare($tagSql);
+                $sth->execute($params);
+            }
+
+            $this->dbh->commit();
+        } catch (Exception $e) {
+            $this->dbh->rollBack();
+            throw $e;
+        }
     }
 
     public function fetchArticle(string $articleId): array

@@ -27,7 +27,7 @@
         <!-- 独立した新規登録ボタンエリア -->
         <div class="header-action">
             <!-- 新規作成ボタン（create.php へ遷移するリンク） -->
-            <a href="/article/create" class="btn-create">＋新規登録</a>
+            <a href="/articles/create" class="btn-create">＋新規登録</a>
         </div>
     </header>
 

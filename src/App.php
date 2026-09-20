@@ -113,10 +113,15 @@ class App
                 'action' => 'logout'
             ],
             // 新規記事作成ページ遷移
-            '/article/create' => [
+            '/articles/create' => [
                 'method' => 'GET',
                 'controller' => 'ArticlesController',
                 'action' => 'showCreate'
+            ],
+            '/articles/store' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'store'
             ],
         ];
 

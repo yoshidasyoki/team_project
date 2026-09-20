@@ -127,4 +127,20 @@ class ArticlesController extends Controller
         $content = $this->render('/articles/create.php', $variables);
         return Response::html($content);
     }
+
+    public function store(): Response
+    {
+        $form = $_POST;
+        $userId = $_SESSION['user_id'];
+
+        // PDO接続
+        $pdo = $this->app->getDatabaseConnector()->getConnection();
+        $articleModel = new Article($pdo);
+
+        // DBへ保存処理を実行
+        $articleModel->storeArticle($form, $userId);
+
+        // HOME画面へリダイレクト
+        return Response::redirect("/");
+    }
 }
