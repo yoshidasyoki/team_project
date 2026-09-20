@@ -118,34 +118,26 @@
                     <h1 class="header-title">ホーム</h1>
                     <p class="header-description">登録記事一覧</p>
                 </div>
-                <div class="header-right-container flex gap-3 items-center self-center ml-auto w-[70%]">
-                    <form class="flex items-stretch rounded-lg overflow-hidden shadow-sm h-full flex-1 hover:opacity-80"
-                        action="検索結果の送信先URL" method="get">
-                        <div class="relative flex items-center flex-1">
-                            <svg class="absolute left-3 top-1/2 -translate-y-1/2" width="16" height="16"
-                                viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0_150_1208)">
-                                    <path
-                                        d="M14.0001 14.0001L11.1068 11.1068M12.6667 7.33333C12.6667 10.2789 10.2789 12.6667 7.33333 12.6667C4.38781 12.6667 2 10.2789 2 7.33333C2 4.38781 4.38781 2 7.33333 2C10.2789 2 12.6667 4.38781 12.6667 7.33333Z"
-                                        stroke="#64748B" stroke-width="2" stroke-linecap="round" />
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_150_1208">
-                                        <rect width="16" height="16" fill="white" />
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                            <input class="search-input pl-10 flex-1 w-full bg-white py-1 bg-[#f7f9fa] text-xs"
-                                type="search" name="q" placeholder="記事を検索...">
-                            <select name="type" class="search-select bg-[var(--button-color)] px-4 text-xs h-full">
-                                <option value="keyword">キーワード</option>
-                                <option value="tag">タグ</option>
-                            </select>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto ">
+                    <div class="flex items-stretch rounded-lg  shadow-sm h-full flex-1 hover:opacity-80">
+                        <div class="flex justify-center items-center px-6 gap-3">
+                            <label for="search" class="cursor-pointer">
+                                <i class="fa-solid fa-magnifying-glass text-gray-500"></i>
+                            </label>
+                            <input class="search-input focus:outline-none bg-white py-1 text-xs"
+                                type="text" id="search" placeholder="記事を検索...">
                         </div>
-                    </form>
-                    <button
-                        class="submit-search-button bg-[var(--color-primary)] text-white rounded-lg px-6 h-full text-sm hover:opacity-80"
-                        type="submit">検索</button>
+                        <select
+                            name="type"
+                            id="js-select-btn"
+                            class="search-select bg-[var(--button-color)] px-4 text-xs h-full">
+                            <option value="keyword">キーワード</option>
+                            <option value="tag">タグ</option>
+                        </select>
+                        <button
+                            class="submit-search-button bg-[var(--color-primary)] text-white rounded-lg px-6 h-full text-sm hover:opacity-80" id="js-search-btn">検索
+                        </button>
+                    </div>
                     <a href="/mypage"
                         class="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
                         <div
@@ -170,7 +162,7 @@
                                     </a>
                                 </div>
                                 <div class="flex items-center gap-4 text-sm text-gray-400 mt-2">
-                                    <form action="/articles/likes?<?= $article['id']; ?>" method="POST">
+                                    <form action="/articles/likes?id=<?= $article['id']; ?>" method="POST">
                                         <button type="submit" class="hover:cursor-pointer">
                                             <span class="flex items-center gap-1">
                                                 <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
@@ -197,6 +189,9 @@
                             </svg>
                         </article>
                     <?php endforeach; ?>
+                    <?php if (empty($articles)) :?>
+                        <p>記事が見つかりませんでした。</p>
+                    <?php endif; ?>
                 </section>
             </main>
             <footer class="footer-container">
@@ -216,5 +211,6 @@
         </div>
     </div>
 </body>
+<script src="/resources/js/search.js"></script>
 
 </html>

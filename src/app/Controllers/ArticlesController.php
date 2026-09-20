@@ -27,7 +27,23 @@ class ArticlesController extends Controller
         $articleModel = new Article($pdo);
 
         // 2. 記事一覧（投稿者名、タグ名、いいね数など含む）を取得
-        $articles = $articleModel->getHome();
+        $search = $_GET['search']??null;
+        $value = $_GET['value']??null;
+
+        // $articles = [];
+        switch (true) {
+            case !$search || !$value:
+                $articles = $articleModel->getHome();
+                break;
+            case $search === 'tag':
+                $articles = $articleModel->findByTag($value);
+                break;
+            case $search === 'keyword':
+                $articles = $articleModel->findByKeyword($value);
+                break;
+            default:
+                throw new HttpNotFoundException();
+        }
 
         // ★ここにデバッグコードを貼り付ける
         // echo '<pre>';
@@ -47,7 +63,7 @@ class ArticlesController extends Controller
 
     public function likesCount(): Response
     {
-        $articlesId = $this->getArticleId();
+        $articlesId = $_GET['id'];
         $articlesModel = new Article($this->dbh);
         $articlesModel->likesCount($articlesId);
         return Response::redirect('/');
@@ -55,7 +71,7 @@ class ArticlesController extends Controller
 
     public function show(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
@@ -68,7 +84,7 @@ class ArticlesController extends Controller
 
     public function edit(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
@@ -83,7 +99,7 @@ class ArticlesController extends Controller
     public function update(): Response
     {
         $form = $_POST;
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $articleModel->update($articleId, $form);
@@ -92,7 +108,7 @@ class ArticlesController extends Controller
 
     public function delete(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $articleModel->delete($articleId);
