@@ -93,9 +93,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">タグ管理</h1>
-                <p class="header-description">タグを管理して、記事の整理を行います</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">タグ管理</h1>
+                    <p class="header-description">タグを管理して、記事の整理を行います</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            ユ
+                        </div>
+                        <span class="text-sm font-bold">ユーザー1</span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8 items-start">
                 <section class="input-tag-container bg-white rounded-xl border border-gray-200 p-8">
