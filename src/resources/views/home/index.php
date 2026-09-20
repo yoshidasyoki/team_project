@@ -1,71 +1,216 @@
+<?php
+
+/** @var array $articles */
+/** @var string $username */
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>トップページ</title>
+    <title>Apprentice Log｜学びを記録し、成長を可視化する</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://kit.fontawesome.com/629369fa67.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="resources/css/style.css">
 </head>
 
-<body>
-    <!-- ナビゲーションメニュー・ボタンエリア -->
-    <header class="header">
-        <div class="header-left">
-            <h2>ホーム画面</h2>
-            <p>ログインユーザー: <?= htmlspecialchars($username, ENT_QUOTES, 'UTF-8') ?></p>
-        </div>
-
-        <!-- マイページ・タグ管理のメニュー -->
-        <nav class="header-nav">
-            <ul>
-                <li><a href="/mypage">マイページ</a></li>
-                <!-- ↑マイページのファイル名決まり次第、書き換える -->
-                <li><a href="/tags/index.php">タグ管理</a></li>
-            </ul>
-        </nav>
-
-        <!-- 独立した新規登録ボタンエリア -->
-        <div class="header-action">
-            <!-- 新規作成ボタン（create.php へ遷移するリンク） -->
-            <a href="/articles/create" class="btn-create">＋新規登録</a>
-        </div>
-    </header>
-
-
-    <div class="article-list">
-        <?php foreach ($articles as $article): ?>
-            <div class="article-card">
-                <div class="article-header">
-                    <div>
-                        <div class="author-name"><?= htmlspecialchars($article['author_name'] ?? 'ユーザー1') ?></div>
-                        <div class="created-at"><?= htmlspecialchars($article['created_at'] ?? '12:34') ?></div>
+<body class="min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat"
+    style="background-image: url('resources/img/bg-img.png');">
+    <div class="grid-layout">
+        <aside class="aside-container">
+            <h1 class="logo-container">
+                <a href="/" class="logo-link">
+                    <div class="logo-img">
+                        <img src="resources/img/logo.png" alt="Apprentice Log">
                     </div>
-                    <!-- タグ（複数ある場合はカンマ区切り、またはリンク） -->
-                    <?php if (!empty($article['tags'])): ?>
-                        <span class="tag-label"><?= htmlspecialchars($article['tags']) ?></span>
-                    <?php endif; ?>
-                </div>
+                    <div class="logo-text">
+                        <span class="logo-text-title">Apprentice Log</span>
+                        <p class="logo-text-description">Apprentice生のためのテックブログ</p>
+                    </div>
+                </a>
+            </h1>
 
-                <h2 class="article-title">
-                    <a href="/articles/detail?id=<?= urlencode($article['id']) ?>">
-                        <?= htmlspecialchars($article['title']) ?>
-                    </a>
-                    <!-- <a href="article.php?id=<?= htmlspecialchars($article['id'], ENT_QUOTES, 'UTF-8') ?>">
-                        <?= htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8') ?>
-                    </a> -->
-                    <!-- 上記どちらか書く -->
-                </h2>
-
-                <div class="article-footer">
-                    <span class="star-icon">☆</span>
-                    <span><?= htmlspecialchars($article['likes_count'] ?? 0) ?></span>
-                </div>
+            <div class="nav-list">
+                <ul>
+                    <li class="nav-item">
+                        <a href="/" class="active">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_19)">
+                                    <path
+                                        d="M12.5 17.4993V10.8327C12.5 10.6117 12.4122 10.3997 12.2559 10.2434C12.0996 10.0871 11.8877 9.99935 11.6667 9.99935H8.33333C8.11232 9.99935 7.90036 10.0871 7.74408 10.2434C7.5878 10.3997 7.5 10.6117 7.5 10.8327V17.4993M2.5 8.33308C2.49994 8.09064 2.55278 7.8511 2.65482 7.63118C2.75687 7.41126 2.90566 7.21625 3.09083 7.05975L8.92417 2.05975C9.22499 1.80551 9.60613 1.66602 10 1.66602C10.3939 1.66602 10.775 1.80551 11.0758 2.05975L16.9092 7.05975C17.0943 7.21625 17.2431 7.41126 17.3452 7.63118C17.4472 7.8511 17.5001 8.09064 17.5 8.33308V15.8331C17.5 16.2751 17.3244 16.699 17.0118 17.0116C16.6993 17.3242 16.2754 17.4997 15.8333 17.4997H4.16667C3.72464 17.4997 3.30072 17.3242 2.98816 17.0116C2.67559 16.699 2.5 16.2751 2.5 15.8331V8.33308Z"
+                                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_19">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>ホーム</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/mypage">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_24)">
+                                    <path
+                                        d="M15.8321 17.5V15.8333C15.8321 14.9493 15.4808 14.1014 14.8556 13.4763C14.2304 12.8512 13.3825 12.5 12.4983 12.5H7.49778C6.61362 12.5 5.76568 12.8512 5.14048 13.4763C4.51529 14.1014 4.16406 14.9493 4.16406 15.8333V17.5M13.3318 5.83333C13.3318 7.67428 11.8392 9.16667 9.99806 9.16667C8.1569 9.16667 6.66435 7.67428 6.66435 5.83333C6.66435 3.99238 8.1569 2.5 9.99806 2.5C11.8392 2.5 13.3318 3.99238 13.3318 5.83333Z"
+                                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_24">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>マイページ</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/tags">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_236_29)">
+                                    <g clip-path="url(#clip1_236_29)">
+                                        <path
+                                            d="M9.30803 1.66602C9.75006 1.66611 10.174 1.84178 10.4865 2.15439L17.7404 9.40833C18.1168 9.78712 18.3281 10.2994 18.3281 10.8334C18.3281 11.3675 18.1168 11.8798 17.7404 12.2586L12.2566 17.7424C11.8778 18.1188 11.3655 18.33 10.8315 18.33C10.2975 18.33 9.78517 18.1188 9.40637 17.7424L2.15244 10.4884C1.83983 10.1759 1.66416 9.75201 1.66406 9.30999V3.33282C1.66406 2.89076 1.83967 2.4668 2.15226 2.15421C2.46485 1.84162 2.8888 1.66602 3.33087 1.66602H9.30803Z"
+                                            stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_236_29">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                    <clipPath id="clip1_236_29">
+                                        <rect width="20" height="20" fill="white" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <span>タグ管理</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
-        <?php endforeach; ?>
+            <div class="new-post-button-container">
+                <a href="/articles/create">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_251_173)">
+                            <path d="M3.75 8.99999H14.2512M9.0006 3.74939V14.2506" stroke="white" stroke-width="2"
+                                stroke-linecap="round" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_251_173">
+                                <rect width="18" height="18" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <span>新規投稿</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main-container">
+            <header class="header-container grid grid-cols-[1fr_2fr]">
+                <div class="header-block flex-none">
+                    <h1 class="header-title">ホーム</h1>
+                    <p class="header-description">登録記事一覧</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto ">
+                    <div class="flex items-stretch rounded-lg  shadow-sm h-full flex-1 hover:opacity-80">
+                        <div class="flex justify-center items-center px-6 gap-3">
+                            <label for="search" class="cursor-pointer">
+                                <i class="fa-solid fa-magnifying-glass text-gray-500"></i>
+                            </label>
+                            <input class="search-input focus:outline-none bg-white py-1 text-xs"
+                                type="text" id="search" placeholder="記事を検索...">
+                        </div>
+                        <select
+                            name="type"
+                            id="js-select-btn"
+                            class="search-select bg-[var(--button-color)] px-4 text-xs h-full">
+                            <option value="keyword">キーワード</option>
+                            <option value="tag">タグ</option>
+                        </select>
+                        <button
+                            class="submit-search-button bg-[var(--color-primary)] text-white rounded-lg px-6 h-full text-sm hover:opacity-80" id="js-search-btn">検索
+                        </button>
+                    </div>
+                    <a href="/mypage"
+                        class="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            <?= substr($username, 0, 1) ?>
+                        </div>
+                        <span class="text-sm font-bold px-3"><?= $username; ?></span>
+                    </a>
+                </div>
+            </header>
+            <main class="p-8 grid grid-cols-1 gap-8">
+                <section class="latest-post p-8 pt-0 flex flex-col gap-4">
+                    <?php foreach ($articles as $article): ?>
+                        <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
+                            <div class="flex-1 min-w-0">
+                                <p class="latest-post-user text-sm font-bold">
+                                    <?= $article['author_name'] ?>
+                                </p>
+                                <div class="latest-post-title font-bold py-2">
+                                    <a href="/articles/detail?id=<?= $article['id']; ?>">
+                                        <p><?= $article['title'] ?></p>
+                                    </a>
+                                </div>
+                                <div class="flex items-center gap-4 text-sm text-gray-400 mt-2">
+                                    <form action="/articles/likes?id=<?= $article['id']; ?>" method="POST">
+                                        <button type="submit" class="hover:cursor-pointer">
+                                            <span class="flex items-center gap-1">
+                                                <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
+                                                <?= $article['likes_count'] ?>
+                                            </span>
+                                        </button>
+                                    </form>
+                                    <span><?= count($article['tags'] ?? null); ?>個のタグ</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <?php foreach ($article['tags'] as $tag) : ?>
+                                    <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
+                                        <?= $tag ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175"
+                                    stroke-width="2" />
+                            </svg>
+                        </article>
+                    <?php endforeach; ?>
+                    <?php if (empty($articles)) :?>
+                        <p>記事が見つかりませんでした。</p>
+                    <?php endif; ?>
+                </section>
+            </main>
+            <footer class="footer-container">
+                <h3 class="footer-logo-container">
+                    <a href="/" class="footer-logo-link">
+                        <div class="footer-logo-img">
+                            <img src="resources/img/logo-green.svg" alt="Apprentice Log">
+                        </div>
+                        <div class="footer-logo-text">
+                            <span class="footer-logo-text-title">Apprentice Log</span>
+                            <p class="footer-logo-text-description">Apprentice生のためのテックブログ</p>
+                        </div>
+                    </a>
+                </h3>
+                <p class="copyright">© 2026 Apprentice Log</p>
+            </footer>
+        </div>
     </div>
-    <form action="/logout" method="POST">
-        <button type="submit">ログアウト</button>
-    </form>
 </body>
+<script src="/resources/js/search.js"></script>
 
 </html>

@@ -1,7 +1,7 @@
 <?php
 
 /** @var int $postingCounts */
-/** @var int $goodCounts */
+/** @var int $likesCount */
 /** @var array $tags */
 /** @var array $articles */
 ?>
@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apprentice Log｜学びを記録し、成長を可視化する</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://kit.fontawesome.com/629369fa67.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="resources/css/style.css">
 </head>
 
@@ -128,13 +129,22 @@
                             </p>
                         </div>
                         <div class="profile-post-like-count-container flex flex-col items-center justify-center">
-                            <img src="resources/img/icon-like-count.png" alt="いいね数" class="w-16 h-16">
+                            <!-- <img src="resources/img/icon-like-count.png" alt="いいね数" class="w-16 h-16"> -->
+
+                            <i class="fa-regular fa-heart text-4xl py-3.5" style="color: rgb(255, 73, 73);"></i>
                             <p class="profile-post-like-count text-sm text-gray-500">いいね数</p>
                             <p class="profile-post-like-count-number text-4xl font-bold">
-                                <?= $goodCounts ?>
+                                <?= $likesCount ?>
                             </p>
                         </div>
                     </div>
+
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="text-gray-500 cursor-pointer">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span>ログアウト</span>
+                        </button>
+                    </form>
                 </section>
 
                 <section class="post-tag-card-container m0-auto p-8 bg-white rounded-2xl flex grid grid-cols-8 gap-4 border border-gray-200">
@@ -148,27 +158,6 @@
                             </p>
                         </div>
                     <?php endforeach; ?>
-                    <!--
-                    <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-red-50 border-red shadow-md">
-                        <p class="post-tag-card-item-name text-sm font-bold text-red-500">Ruby</p>
-                        <p class="post-tag-card-item-count font-bold text-2xl">20</p>
-                    </div>
-                    <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-pink-50 border-pink shadow-md">
-                        <p class="post-tag-card-item-name text-sm font-bold text-pink-500">PHP</p>
-                        <p class="post-tag-card-item-count font-bold text-2xl">5</p>
-                    </div>
-                    <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-yellow-50 border-yellow shadow-md">
-                        <p class="post-tag-card-item-name text-sm font-bold text-yellow-700">JavaScript</p>
-                        <p class="post-tag-card-item-count font-bold text-2xl">10</p>
-                    </div>
-                    <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-green-50 border-green shadow-md">
-                        <p class="post-tag-card-item-name text-sm font-bold text-green-700">Git</p>
-                        <p class="post-tag-card-item-count font-bold text-2xl">3</p>
-                    </div>
-                    <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-sky-50 border-sky shadow-md">
-                        <p class="post-tag-card-item-name text-sm font-bold text-sky-700">Docker</p>
-                        <p class="post-tag-card-item-count font-bold text-2xl">1</p>
-                    </div> -->
                 </section>
 
                 <section class="latest-post flex flex-col gap-4">
@@ -195,13 +184,12 @@
                                     </p>
                                     <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
                                         <span class="flex items-center gap-1">
-                                            <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z" fill="#F6B500" />
-                                            </svg> <?= $article['likes_count'] ?></span>
+                                            <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
+                                            <?= $article['likes_count'] ?>
+                                        </span>
                                         <span><?= count($article['tags']) ?>個のタグ</span>
                                     </div>
                                 </div>
-                                <span class="text-sm text-gray-400 whitespace-nowrap">10時間前</span>
                                 <svg class="align-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
                                 </svg>
@@ -231,72 +219,3 @@
 </body>
 
 </html>
-
-
-
-<!-- <section class="latest-post flex flex-col gap-4">
-                    <h2 class="latest-post-title text-2xl font-bold">最新の投稿</h2>
-                    <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
-                        <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
-                            Ruby
-                        </span>
-                        <div class="flex-1 min-w-0">
-                            <p class="latest-post-title font-bold truncate">
-                                Ruby 3.3で導入された新しいYJITの最適化手法とパフォーマンス計測
-                            </p>
-                            <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                                <span class="flex items-center gap-1">
-                                    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z" fill="#F6B500" />
-                                    </svg> 12</span>
-                                <span>2個のタグ</span>
-                            </div>
-                        </div>
-                        <span class="text-sm text-gray-400 whitespace-nowrap">10時間前</span>
-                        <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
-                        </svg>
-                    </article>
-                    <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
-                        <span class="latest-post-tag text-xs font-bold text-sky-500 bg-sky-50 px-3 py-1 rounded-full">
-                            PHP
-                        </span>
-                        <div class="flex-1 min-w-0">
-                            <p class="latest-post-title font-bold truncate">
-                                PHP 8.3の読みやすい新機能と、レガシープロジェクトへの安全な移行手順
-                            </p>
-                            <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                                <span class="flex items-center gap-1">
-                                    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z" fill="#F6B500" />
-                                    </svg> 15</span>
-                                <span>3個のタグ</span>
-                            </div>
-                        </div>
-                        <span class="text-sm text-gray-400 whitespace-nowrap">10時間前</span>
-                        <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
-                        </svg>
-                    </article>
-                    <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
-                        <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
-                            Ruby
-                        </span>
-                        <div class="flex-1 min-w-0">
-                            <p class="latest-post-title font-bold truncate">
-                                Ruby 3.3で導入された新しいYJITの最適化手法とパフォーマンス計測
-                            </p>
-                            <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                                <span class="flex items-center gap-1">
-                                    <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M10.3638 15.1534L3.92063 19.8068L6.46041 12.2386L0.000177622 7.56817H7.90927L10.3638 -1.23978e-05L12.8184 7.56817H20.7275L14.2672 12.2386L16.807 19.8068L10.3638 15.1534ZM10.3638 13.0398L13.5002 15.3068L12.2559 11.5909L15.4604 9.27272H11.5911L10.3638 5.52272L9.15359 9.27272H5.26722L8.47177 11.5909L7.22745 15.3068L10.3638 13.0398Z" fill="#F6B500" />
-                                    </svg> 12</span>
-                                <span>2個のタグ</span>
-                            </div>
-                        </div>
-                        <span class="text-sm text-gray-400 whitespace-nowrap">10時間前</span>
-                        <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
-                        </svg>
-                    </article>
-                </section> -->

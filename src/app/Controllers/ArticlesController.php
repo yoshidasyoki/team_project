@@ -27,7 +27,23 @@ class ArticlesController extends Controller
         $articleModel = new Article($pdo);
 
         // 2. 記事一覧（投稿者名、タグ名、いいね数など含む）を取得
-        $articles = $articleModel->getHome();
+        $search = $_GET['search']??null;
+        $value = $_GET['value']??null;
+
+        // $articles = [];
+        switch (true) {
+            case !$search || !$value:
+                $articles = $articleModel->getHome();
+                break;
+            case $search === 'tag':
+                $articles = $articleModel->findByTag($value);
+                break;
+            case $search === 'keyword':
+                $articles = $articleModel->findByKeyword($value);
+                break;
+            default:
+                throw new HttpNotFoundException();
+        }
 
         // ★ここにデバッグコードを貼り付ける
         // echo '<pre>';
@@ -45,9 +61,17 @@ class ArticlesController extends Controller
         return Response::html($content);
     }
 
+    public function likesCount(): Response
+    {
+        $articlesId = $_GET['id'];
+        $articlesModel = new Article($this->dbh);
+        $articlesModel->likesCount($articlesId);
+        return Response::redirect('/');
+    }
+
     public function show(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
@@ -60,7 +84,7 @@ class ArticlesController extends Controller
 
     public function edit(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
@@ -75,16 +99,16 @@ class ArticlesController extends Controller
     public function update(): Response
     {
         $form = $_POST;
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $articleModel->update($articleId, $form);
-        return Response::redirect("/articles/detail?id=$articleId");
+        return Response::redirect("/");
     }
 
     public function delete(): Response
     {
-        $articleId = $this->getArticleId();
+        $articleId = $_GET['id'];
 
         $articleModel = new Article($this->dbh);
         $articleModel->delete($articleId);
@@ -103,15 +127,34 @@ class ArticlesController extends Controller
     }
 
 
+    // public function showCreate(): Response
+    // {
+    //     // 1. ビューへ渡す変数を準備（必要に応じて）
+    //     $variables = [
+    //         'username' => $_SESSION['username'] ?? 'Guest',
+    //     ];
+
+    //     // 2. renderメソッドを使ってHTMLを生成し、Responseオブジェクトとして返す
+    //     // ※ビューファイルの配置場所に合わせてパスを調整してください (例: /articles/create.php)
+    //     $content = $this->render('/create.html', $variables);
+    //     return Response::html($content);
+    // }
+
     public function showCreate(): Response
     {
-        // 1. ビューへ渡す変数を準備（必要に応じて）
+        // 1. PDO接続を取得してタグ一覧を取得する
+        $pdo = $this->app->getDatabaseConnector()->getConnection();
+        $stmt = $pdo->query('SELECT id, name FROM tags');
+        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 2. ビューへ渡す変数を準備
         $variables = [
             'username' => $_SESSION['username'] ?? 'Guest',
+            'tags'     => $tags, // タグ一覧を追加
         ];
 
-        // 2. renderメソッドを使ってHTMLを生成し、Responseオブジェクトとして返す
-        // ※ビューファイルの配置場所に合わせてパスを調整してください (例: /articles/create.php)
+        // 3. renderメソッドを使ってHTML/PHPテンプレートを生成
+        // ※PHPのタグ（foreach）を動かすため、テンプレートファイルが .php の場合はパスを調整してください（例: /create.php や /articles/create.php）
         $content = $this->render('/articles/create.php', $variables);
         return Response::html($content);
     }

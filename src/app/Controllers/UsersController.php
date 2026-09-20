@@ -14,11 +14,11 @@ class UsersController extends Controller
         $articles = $articleModel->findAllByUser($_SESSION['user_id']);
 
         $postingCounts = count($articles);
-        $goodCounts = array_sum(array_map(fn($item) => $item['likes_count'], $articles));
+        $likesCount = array_sum(array_map(fn($item) => $item['likes_count'], $articles));
 
         $content = $this->render('/users/index.php', [
             'postingCounts' => $postingCounts,
-            'goodCounts' => $goodCounts,
+            'likesCount' => $likesCount,
             'articles' => $articles,
             'tags' => $tags,
         ]);
