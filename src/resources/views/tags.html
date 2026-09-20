@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#">
+                        <a href="#" class="active">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_236_29)">
                                 <g clip-path="url(#clip1_236_29)">
@@ -94,45 +94,18 @@
         </aside>
         <div class="main-container">
             <header class="header-container">
-                <h1 class="header-title">新規投稿</h1>
-                <p class="header-description">新しい技術記事を作成しましょう</p>
+                <h1 class="header-title">タグ管理</h1>
+                <p class="header-description">タグを管理して、記事の整理を行います</p>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8 overflow-hidden">
                 <div class="new-post-container bg-white rounded-xl border border-gray-200 p-8">
-                    <h2 class="font-bold text-xl">記事の内容を入力</h2>
-                    <section class="title-container flex flex-col gap-4 pt-4">
-                        <h3 class="post-title font-bold">タイトル</h3>
-                        <input class="post-title-input w-full pl-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" id="title" name="title" placeholder="記事のタイトルを入力してください">
-                    </section>
-                    <section class="post-tag-container flex flex-col gap-4 pt-8">
-                        <h3 class="post-tag font-bold">カテゴリ（タグ）</h3>
-                        <p class="post-tag-description text-sm text-gray-500">記事のカテゴリを選択してください</p>
-                        <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-red-50 border-red shadow-md cursor-pointer" onclick="toggleTag(this)">
-                                <p class="post-tag-card-item-name justify-center text-sm font-bold text-red-500">Ruby</p>
-                            </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-pink-50 border-pink shadow-md cursor-pointer" onclick="toggleTag(this)">
-                                <p class="post-tag-card-item-name text-sm font-bold text-pink-500">PHP</p>
-                            </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-yellow-50 border-yellow shadow-md cursor-pointer" onclick="toggleTag(this)">
-                                <p class="post-tag-card-item-name text-sm font-bold text-yellow-700">JavaScript</p>
-                            </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-green-50 border-green shadow-md cursor-pointer" onclick="toggleTag(this)">
-                                <p class="post-tag-card-item-name text-sm font-bold text-green-700">Git</p>
-                            </div>
-                            <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-sky-50 border-sky shadow-md cursor-pointer" onclick="toggleTag(this)">
-                                <p class="post-tag-card-item-name text-sm font-bold text-sky-700">Docker</p>
-                            </div>
-                        </article>
-                    </section>
-                    <section class="post-main-content-container flex flex-col gap-2 pt-8">
-                        <h3 class="post-main-content font-bold">本文</h3>
-                        <textarea class="post-title-input min-h-[40vh] w-full pl-4 pt-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" placeholder="記事の内容を入力してください"></textarea>
-                    </section>
-                    <section class="post-botton-area flex justify-between py-4">
-                        <button class="font-bold px-10 py-2 cursor-pointer">キャンセル</button>
-                        <button class="bg-[#13283E] text-white font-bold inline-block rounded-lg px-10 py-4 items-centers cursor-pointer">投稿する</button>
-                    </section>
+                    <h3 class="post-tag font-bold">タグを入力</h3>
+                    <div class="input-tag-container flex items-stretch rounded-lg overflow-hidden gap-4 pt-8">
+                        <form class="rounded-lg overflow-hidden hover:opacity-80" action="検索結果の送信先URL" method="get">
+                            <input class="input-tag w-70% pl-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" id="title" name="title" placeholder="記事のタイトルを入力してください">
+                        </form>
+                        <button class="submit-search-button bg-[var(--button-color)] text-white rounded-lg px-6 text-sm hover:opacity-80" type="submit">追加</button>
+                    </div>
                 </div>
             </main>
             <footer class="footer-container">
