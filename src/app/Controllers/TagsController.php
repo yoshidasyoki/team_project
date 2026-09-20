@@ -7,7 +7,13 @@ class TagsController extends Controller
 {
     public function index(): Response
     {
-        $sql = 'SELECT name FROM tags;';
+        $sql = <<<EOF
+            SELECT t.id, t.name, COUNT(at.tag_id) AS count
+            FROM tags AS t
+            LEFT JOIN articles_tags AS at
+                ON t.id = at.tag_id
+            GROUP BY t.id;
+        EOF;
         $sth = $this->dbh->prepare($sql);
         $sth->execute();
         $tags = $sth->fetchAll(PDO::FETCH_ASSOC);
@@ -28,3 +34,10 @@ class TagsController extends Controller
         return Response::redirect('/tags');
     }
 }
+
+
+// SELECT t.id, t.name, COUNT(at.tag_id) AS count
+// FROM tags AS t
+// LEFT JOIN articles_tags AS at
+//     ON t.id = at.tag_id
+// GROUP BY t.id;
