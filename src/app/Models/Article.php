@@ -174,6 +174,55 @@ class Article
         return array_values($articles);
     }
 
+
+    // Article.php 内へ追加
+
+    public function storeArticle(array $form, string $userId): void //←: voidは、return でデータを出力しない
+    {
+        try {
+            $this->dbh->beginTransaction();
+
+            // 1. articles テーブルへの保存
+            $articleSql = "
+                INSERT INTO articles (user_id, title, body)
+                VALUES (:user_id, :title, :body);
+            ";
+
+            $sth = $this->dbh->prepare($articleSql);
+            $sth->execute([
+                ':user_id' => $userId,
+                ':title'   => $form['title'],
+                ':body'    => $form['body'],
+            ]);
+
+            // 保存した記事のIDを取得
+            $articleId = $this->dbh->lastInsertId();
+
+            // 2. タグが選択されている場合は articles_tags (中間テーブル) に保存
+            if (!empty($form['tags']) && is_array($form['tags'])) {
+                $params = [':article_id' => $articleId];
+                $values = [];
+
+                foreach ($form['tags'] as $index => $tagId) {
+                    $values[] = "(:article_id, :tag_id_$index)";
+                    $params["tag_id_$index"] = $tagId;
+                }
+
+                $placeholder = implode(',', $values);
+                $tagSql = "INSERT INTO articles_tags (article_id, tag_id) VALUES $placeholder";
+
+                $sth = $this->dbh->prepare($tagSql);
+                $sth->execute($params);
+            }
+
+            $this->dbh->commit();
+        } catch (Exception $e) {
+            $this->dbh->rollBack();
+            throw $e;
+        }
+    }
+
+
     public function findAllByUser(string $userId): array
     {
         $sql = <<<EOF
@@ -212,6 +261,7 @@ class Article
     }
 
     public function find(string $articleId): array
+
     {
         // タイトルと本文（articlesテーブルの情報）を取得
         $articleSql = <<<EOF
@@ -307,44 +357,3 @@ class Article
         }
     }
 }
-
-
-
-// WITH search_results AS (
-//     SELECT id
-//     FROM articles
-//     WHERE title COLLATE utf8mb4_0900_as_cs LIKE '%テス%'
-//         OR body COLLATE utf8mb4_0900_as_cs LIKE '%テス%'
-// )
-// SELECT a.id, a.title, a.body, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tags
-// FROM articles AS a
-//     INNER JOIN articles_tags AS at
-//         ON a.id = at.article_id
-// INNER JOIN tags AS t
-//     ON t.id = at.tag_id
-// INNER JOIN users AS u
-//     ON u.id = a.user_id
-// WHERE a.id IN (
-//     SELECT id from search_results
-// );
-
-// WITH search_results AS (
-//                 SELECT a.id
-//                 FROM articles AS a
-//                 INNER JOIN articles_tags AS at
-//                     ON a.id = at.article_id
-//                 INNER JOIN tags AS t
-//                     ON t.id = at.tag_id
-//                 WHERE t.name = :tag_name
-//             )
-//             SELECT a.id, a.title, a.updated_at, a.likes_count, u.name AS author_name, t.name AS tags
-//             FROM articles AS a
-//                 INNER JOIN articles_tags AS at
-//                     ON a.id = at.article_id
-//             INNER JOIN tags AS t
-//                 ON t.id = at.tag_id
-//             INNER JOIN users AS u
-//                 ON u.id = a.user_id
-//             WHERE a.id IN (
-//                 SELECT id from search_results
-//             );

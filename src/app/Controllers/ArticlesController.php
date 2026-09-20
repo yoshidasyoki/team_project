@@ -125,4 +125,53 @@ class ArticlesController extends Controller
         $article = $sth->fetch(PDO::FETCH_ASSOC);
         return $article['user_id'] == $_SESSION['user_id'];
     }
+
+
+    // public function showCreate(): Response
+    // {
+    //     // 1. ビューへ渡す変数を準備（必要に応じて）
+    //     $variables = [
+    //         'username' => $_SESSION['username'] ?? 'Guest',
+    //     ];
+
+    //     // 2. renderメソッドを使ってHTMLを生成し、Responseオブジェクトとして返す
+    //     // ※ビューファイルの配置場所に合わせてパスを調整してください (例: /articles/create.php)
+    //     $content = $this->render('/create.html', $variables);
+    //     return Response::html($content);
+    // }
+
+    public function showCreate(): Response
+    {
+        // 1. PDO接続を取得してタグ一覧を取得する
+        $pdo = $this->app->getDatabaseConnector()->getConnection();
+        $stmt = $pdo->query('SELECT id, name FROM tags');
+        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // 2. ビューへ渡す変数を準備
+        $variables = [
+            'username' => $_SESSION['username'] ?? 'Guest',
+            'tags'     => $tags, // タグ一覧を追加
+        ];
+
+        // 3. renderメソッドを使ってHTML/PHPテンプレートを生成
+        // ※PHPのタグ（foreach）を動かすため、テンプレートファイルが .php の場合はパスを調整してください（例: /create.php や /articles/create.php）
+        $content = $this->render('/articles/create.php', $variables);
+        return Response::html($content);
+    }
+
+    public function store(): Response
+    {
+        $form = $_POST;
+        $userId = $_SESSION['user_id'];
+
+        // PDO接続
+        $pdo = $this->app->getDatabaseConnector()->getConnection();
+        $articleModel = new Article($pdo);
+
+        // DBへ保存処理を実行
+        $articleModel->storeArticle($form, $userId);
+
+        // HOME画面へリダイレクト
+        return Response::redirect("/");
+    }
 }

@@ -117,6 +117,17 @@ class App
                 'controller' => 'AuthController',
                 'action' => 'logout'
             ],
+            // 新規記事作成ページ遷移
+            '/articles/create' => [
+                'method' => 'GET',
+                'controller' => 'ArticlesController',
+                'action' => 'showCreate'
+            ],
+            '/articles/store' => [
+                'method' => 'POST',
+                'controller' => 'ArticlesController',
+                'action' => 'store'
+            ],
         ];
 
         // 未認証状態でないとアクセスできないリソースを設定
