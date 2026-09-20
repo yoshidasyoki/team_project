@@ -51,7 +51,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="active">
+                        <a href="/mypage" class="active">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g clip-path="url(#clip0_236_24)">
                                     <path d="M15.8321 17.5V15.8333C15.8321 14.9493 15.4808 14.1014 14.8556 13.4763C14.2304 12.8512 13.3825 12.5 12.4983 12.5H7.49778C6.61362 12.5 5.76568 12.8512 5.14048 13.4763C4.51529 14.1014 4.16406 14.9493 4.16406 15.8333V17.5M13.3318 5.83333C13.3318 7.67428 11.8392 9.16667 9.99806 9.16667C8.1569 9.16667 6.66435 7.67428 6.66435 5.83333C6.66435 3.99238 8.1569 2.5 9.99806 2.5C11.8392 2.5 13.3318 3.99238 13.3318 5.83333Z" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -88,7 +88,7 @@
                 </ul>
             </div>
             <div class="new-post-button-container">
-                <a href="#">
+                <a href="/articles/create">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_251_173)">
                             <path d="M3.75 8.99999H14.2512M9.0006 3.74939V14.2506" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -129,8 +129,6 @@
                             </p>
                         </div>
                         <div class="profile-post-like-count-container flex flex-col items-center justify-center">
-                            <!-- <img src="resources/img/icon-like-count.png" alt="いいね数" class="w-16 h-16"> -->
-
                             <i class="fa-regular fa-heart text-4xl py-3.5" style="color: rgb(255, 73, 73);"></i>
                             <p class="profile-post-like-count text-sm text-gray-500">いいね数</p>
                             <p class="profile-post-like-count-number text-4xl font-bold">
