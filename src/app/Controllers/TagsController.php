@@ -28,7 +28,7 @@ class TagsController extends Controller
 
         $sql = 'INSERT INTO tags (name) VALUES (:tag)';
         $sth = $this->dbh->prepare($sql);
-        $sth->bindValue('tag', $tag);
+        $sth->bindValue(':tag', $tag);
         $sth->execute();
 
         return Response::redirect('/tags');

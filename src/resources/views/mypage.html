@@ -93,9 +93,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">マイページ</h1>
-                <p class="header-description">プロフィールと投稿した記事を確認できます</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">マイページ</h1>
+                    <p class="header-description">プロフィールと投稿した記事を確認できます</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            ユ
+                        </div>
+                        <span class="text-sm font-bold">ユーザー1</span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8">
                 <section class="profile-container m0-auto p-8 bg-white rounded-2xl grid grid-cols-2 gap-4 border border-gray-200">

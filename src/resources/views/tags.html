@@ -93,9 +93,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">タグ管理</h1>
-                <p class="header-description">タグを管理して、記事の整理を行います</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">タグ管理</h1>
+                    <p class="header-description">タグを管理して、記事の整理を行います</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            ユ
+                        </div>
+                        <span class="text-sm font-bold">ユーザー1</span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8 items-start">
                 <section class="input-tag-container bg-white rounded-xl border border-gray-200 p-8">
@@ -109,133 +121,133 @@
                 </section>
                 <section class="tag-manage-container bg-white rounded-xl border border-gray-200 p-6">
                     <h3 class="tag-manage-title font-bold">タグ一覧</h3>
-                    <div class="tag-cards-container grid grid-cols-4 p-6 gap-6">
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-red-500 bg-red-50 px-6 py-3 rounded-full">
+                    <div class="tag-cards-container grid grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-red-500 bg-red-50 px-6 py-3 rounded-full">
                                 Ruby
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-pink-500 bg-pink-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-pink-500 bg-pink-50 px-6 py-3 rounded-full">
                                 PHP
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-yellow-500 bg-yellow-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-yellow-500 bg-yellow-50 px-6 py-3 rounded-full">
                                 Javascript
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-green-500 bg-green-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-green-500 bg-green-50 px-6 py-3 rounded-full">
                                 Git
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-sky-500 bg-sky-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-sky-500 bg-sky-50 px-6 py-3 rounded-full">
                                 TypeScript
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-rose-500 bg-rose-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-rose-500 bg-rose-50 px-6 py-3 rounded-full">
                                 Rails
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-orange-500 bg-orange-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-orange-500 bg-orange-50 px-6 py-3 rounded-full">
                                 Laravel
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-purple-500 bg-purple-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-purple-500 bg-purple-50 px-6 py-3 rounded-full">
                                 GitHub
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-blue-500 bg-blue-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-blue-500 bg-blue-50 px-6 py-3 rounded-full">
                                 Docker
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-gray-500 bg-gray-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-gray-500 bg-gray-50 px-6 py-3 rounded-full">
                                 Next.js
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-yellow-500 bg-sky-200 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden">
+                            <span class="tag-name shrink-0 text-xs font-bold text-yellow-500 bg-sky-200 px-6 py-3 rounded-full">
                                 MySQL
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
                                 </svg>
                             </div>
                         </article>
-                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-stone-500 bg-stone-50 px-6 py-3 rounded-full">
+                        <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4 overflow-hidden ">
+                            <span class="tag-name shrink-0 text-xs font-bold text-stone-500 bg-stone-50 px-6 py-3 rounded-full">
                                 Linux
                             </span>
-                            <div class="tag-card-right flex gap-2">
+                            <div class="tag-card-right flex gap-2 shrink-0">
                                 <span class="bg-[#F1F5F8] text-gray-400 rounded-full text-xs px-4 py-3">20</span>
                                 <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2"/>
