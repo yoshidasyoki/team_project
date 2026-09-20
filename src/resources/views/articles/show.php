@@ -104,9 +104,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">記事詳細</h1>
-                <p class="header-description">記事の詳細を確認いただけます</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">記事詳細</h1>
+                    <p class="header-description">記事の詳細を確認いただけます</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            ユ
+                        </div>
+                        <span class="text-sm font-bold">ユーザー1</span>
+                    </a>
+                </div>
             </header>
 
             <main class="px-16 py-12 text-gray-700">
