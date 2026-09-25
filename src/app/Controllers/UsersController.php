@@ -16,11 +16,14 @@ class UsersController extends Controller
         $postingCounts = count($articles);
         $likesCount = array_sum(array_map(fn($item) => $item['likes_count'], $articles));
 
+        $username = $_SESSION['username'] ?? 'Guest';
+
         $content = $this->render('/users/index.php', [
             'postingCounts' => $postingCounts,
             'likesCount' => $likesCount,
             'articles' => $articles,
             'tags' => $tags,
+            'username' => $username
         ]);
         return Response::html($content);
     }

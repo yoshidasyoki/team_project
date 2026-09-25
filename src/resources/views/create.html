@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apprentice Log｜学びを記録し、成長を可視化する</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/resources/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body class="min-h-screen items-center justify-center bg-cover bg-center bg-no-repeat"
@@ -16,7 +16,7 @@
             <h1 class="logo-container">
                 <a href="/" class="logo-link">
                     <div class="logo-img">
-                        <img src="/resources/img/logo.png" alt="Apprentice Log">
+                        <img src="../img/logo.png" alt="Apprentice Log">
                     </div>
                     <div class="logo-text">
                         <span class="logo-text-title">Apprentice Log</span>
@@ -116,7 +116,7 @@
                     <div id="selectedTagsContainer"></div>
                     <div class="new-post-container bg-white rounded-xl border border-gray-200 p-8">
                         <h2 class="font-bold text-xl">記事の内容を入力</h2>
-                        <section class="title-container flex flex-col gap-4 pt-4">
+                        <section class="title-container flex flex-col gap-4 pt-8">
                             <h3 class="post-title font-bold">タイトル</h3>
                             <input
                                 class="post-title-input w-full pl-4 rounded-xl text-sm border border-gray-200 rounded-lg"
@@ -126,7 +126,7 @@
                             <h3 class="post-tag font-bold">カテゴリ（タグ）</h3>
                             <p class="post-tag-description text-sm text-gray-500">記事のカテゴリを選択してください</p>
 
-                            <!-- <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
+                            <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
                                 <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-red-50 border-red shadow-md cursor-pointer"
                                     data-tag-id="1"
                                     onclick="toggleTag(this)">
@@ -153,7 +153,7 @@
                                     onclick="toggleTag(this)">
                                     <p class="post-tag-card-item-name text-sm font-bold text-sky-700">Docker</p>
                                 </div>
-                            </article> -->
+                            </article>
 
                             <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
                                 <?php foreach ($tags as $tag): ?>

@@ -19,6 +19,8 @@ class TagsController extends Controller
         $tags = $sth->fetchAll(PDO::FETCH_ASSOC);
 
         $content = $this->render('/tags/index.php', ['tags' => $tags]);
+        $username = $_SESSION['username'] ?? 'Guest';
+        $content = $this->render('/tags/index.php', ['tags' => $tags, 'username' => $username]);
         return Response::html($content);
     }
 

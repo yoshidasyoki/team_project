@@ -106,9 +106,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">新規投稿</h1>
-                <p class="header-description">新しい技術記事を作成しましょう</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">新規投稿</h1>
+                    <p class="header-description">新しい技術記事を作成しましょう</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            <?= substr($username, 0, 1) ?>
+                        </div>
+                        <span class="text-sm font-bold"><?= $username; ?></span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8 overflow-hidden">
                 <form id="articleForm" class="space-y-8" action="/articles/store" method="POST">
@@ -116,7 +128,7 @@
                     <div id="selectedTagsContainer"></div>
                     <div class="new-post-container bg-white rounded-xl border border-gray-200 p-8">
                         <h2 class="font-bold text-xl">記事の内容を入力</h2>
-                        <section class="title-container flex flex-col gap-4 pt-4">
+                        <section class="title-container flex flex-col gap-4 pt-8">
                             <h3 class="post-title font-bold">タイトル</h3>
                             <input
                                 class="post-title-input w-full pl-4 rounded-xl text-sm border border-gray-200 rounded-lg"
@@ -157,13 +169,17 @@
 
                             <article class="post-tag-card-container m0-auto flex flex-wrap gap-4">
                                 <?php foreach ($tags as $tag): ?>
-                                <div class="post-tag-card-item flex items-center justify-center rounded-lg px-7 py-3 bg-gray-50 border border-gray-200 shadow-md cursor-pointer select-none"
-                                    data-tag-id="<?= htmlspecialchars($tag['id'], ENT_QUOTES, 'UTF-8') ?>"
-                                    onclick="toggleTag(this)">
-                                    <p class="post-tag-card-item-name text-sm font-bold text-gray-700">
-                                        <?= htmlspecialchars($tag['name'], ENT_QUOTES, 'UTF-8') ?>
-                                    </p>
-                                </div>
+                                    <label class="cursor-pointer rounded-lg border border-gray-500 bg-gray-50 px-7 py-3 shadow-md select-none
+                                        has-[:checked]:bg-red-50 has-[:checked]:text-red-500 has-[:checked]:border-red-500 has-[:checked]:shadow-md">
+                                        <input
+                                            type="checkbox"
+                                            name="tags[]"
+                                            value="<?= htmlspecialchars($tag['id'], ENT_QUOTES, 'UTF-8') ?>"
+                                            class="sr-only">
+                                        <span class="text-sm font-bold group-has-[:checked]:text-white">
+                                            <?= htmlspecialchars($tag['name'], ENT_QUOTES, 'UTF-8') ?>
+                                        </span>
+                                    </label>
                                 <?php endforeach; ?>
                             </article>
                         </section>
@@ -204,12 +220,12 @@
         function toggleTag(el) {
             el.classList.toggle('selected');
 
-            // 選択スタイル（見た目）の切替
-            if (el.classList.contains('selected')) {
-                el.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
-            } else {
-                el.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
-            }
+            // // 選択スタイル（見た目）の切替
+            // if (el.classList.contains('selected')) {
+            //     el.classList.add('text-red-500', 'bg-red-50', 'ring-red-500');
+            // } else {
+            //     el.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+            // }
 
             // selectedTagsContainer 内の input 状態を更新
             updateHiddenTags();

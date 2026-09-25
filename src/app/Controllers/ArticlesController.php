@@ -72,19 +72,24 @@ class ArticlesController extends Controller
     public function show(): Response
     {
         $articleId = $_GET['id'];
+        $username = $_SESSION['username'] ?? 'Guest';
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
         $content = $this->render('/articles/show.php', [
             ...$article,
             'isAuthor' => $this->checkAuthor($articleId),
+            'username' => $username
         ]);
+
+
         return Response::html($content);
     }
 
     public function edit(): Response
     {
         $articleId = $_GET['id'];
+        $username = $_SESSION['username'] ?? 'Guest';
 
         $articleModel = new Article($this->dbh);
         $article = $articleModel->find($articleId);
@@ -92,7 +97,9 @@ class ArticlesController extends Controller
         $content = $this->render('/articles/edit.php', [
             ...$article,
             'tags' => $tags,
+            'username' => $username
         ]);
+
         return Response::html($content);
     }
 

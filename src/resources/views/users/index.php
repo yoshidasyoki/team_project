@@ -104,9 +104,21 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">マイページ</h1>
-                <p class="header-description">プロフィールと投稿した記事を確認できます</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">マイページ</h1>
+                    <p class="header-description">プロフィールと投稿した記事を確認できます</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            <?= substr($username, 0, 1) ?>
+                        </div>
+                        <span class="text-sm font-bold"><?= $username; ?></span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8">
                 <section class="profile-container m0-auto p-8 bg-white rounded-2xl grid grid-cols-2 gap-4 border border-gray-200">
@@ -119,36 +131,37 @@
                             日々学んだことや気づきをアウトプットして、<br>
                             誰かの学びのきっかけになれたら嬉しいです！
                         </p>
+                        <form action="/logout" method="POST">
+                        <button type="submit" class="text-gray-500 cursor-pointer pt-2">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span>ログアウト</span>
+                        </button>
+                    </form>
                     </div>
                     <div class="profile-post-container grid grid-cols-2">
                         <div class="profile-post-count-container flex flex-col items-center justify-center">
                             <img src="resources/img/icon-post-count.png" alt="投稿数" class="w-16 h-16">
-                            <p class="profile-post-count text-sm text-gray-500">投稿数</p>
+                            <p class="profile-post-count text-sm text-gray-500 pt-2">投稿数</p>
                             <p class="profile-post-count-number text-4xl font-bold">
                                 <?= $postingCounts; ?>
                             </p>
                         </div>
                         <div class="profile-post-like-count-container flex flex-col items-center justify-center">
-                            <i class="fa-regular fa-heart text-4xl py-3.5" style="color: rgb(255, 73, 73);"></i>
-                            <p class="profile-post-like-count text-sm text-gray-500">いいね数</p>
+                            <div class="w-16 h-16 flex items-center justify-center bg-red-50 rounded-full">
+                                <i class="fa-regular fa-heart text-4xl" style="color: rgb(255, 73, 73);"></i>
+                            </div>
+                            <p class="profile-post-like-count text-sm text-gray-500 pt-2">いいね数</p>
                             <p class="profile-post-like-count-number text-4xl font-bold">
                                 <?= $likesCount ?>
                             </p>
                         </div>
                     </div>
-
-                    <form action="/logout" method="POST">
-                        <button type="submit" class="text-gray-500 cursor-pointer">
-                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                            <span>ログアウト</span>
-                        </button>
-                    </form>
                 </section>
 
                 <section class="post-tag-card-container m0-auto p-8 bg-white rounded-2xl flex grid grid-cols-8 gap-4 border border-gray-200">
                     <?php foreach ($tags as $tag) : ?>
-                        <div class="post-tag-card-item flex flex-col items-center justify-center rounded-lg p-3 bg-red-50 border-red shadow-md">
-                            <p class="post-tag-card-item-name text-sm font-bold text-red-500">
+                        <div class="post-tag-card-items flex flex-col items-center justify-center rounded-lg p-3 border-red-500 bg-red-50 shadow-md">
+                            <p class="post-tag-card-item-name text-sm font-bold text-red-500 truncate w-full text-center">
                                 <?= $tag['name'] ?>
                             </p>
                             <p class="post-tag-card-item-count font-bold text-2xl">
@@ -163,35 +176,27 @@
 
                     <!-- 投稿記事をカード形式で表示 -->
                     <?php foreach ($articles as $article) : ?>
-                        <article class="flex flex-col gap-3 bg-white rounded-xl px-12 py-8 border border-gray-200">
-
-                            <div class="flex gap-2">
-                                <?php foreach ($article['tags'] as $tag) : ?>
-                                    <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full">
-                                        <?= $tag ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-
-                            <section class="flex items-start gap-4 ">
-                                <div class="flex-1 min-w-0">
-                                    <a href="/articles/detail?id=<?= $article['id'] ?>" class="latest-post-title font-bold truncate">
+                        <article class="flex items-start gap-4 bg-white rounded-xl p-4 border border-gray-200">
+                            <?php foreach ($article['tags'] as $tag) : ?>
+                                <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-3 py-1 rounded-full shrink-0 w-24 text-center truncate">
+                                    <?= $tag ?>
+                                </span>
+                            <?php endforeach; ?>
+                            <div class="flex-1 min-w-0">
+                                <a href="/articles/detail?id=<?= $article['id'] ?>" class="latest-post-title font-bold text-lg truncate block">
                                         <?= $article['title'] ?>
-                                    </a>
-                                    <p class="latest-post-title font-bold truncate">
-                                    </p>
-                                    <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                                        <span class="flex items-center gap-1">
-                                            <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
-                                            <?= $article['likes_count'] ?>
-                                        </span>
-                                        <span><?= count($article['tags']) ?>個のタグ</span>
-                                    </div>
+                                </a>
+                                <div class="flex items-center gap-4 text-sm text-gray-400 mt-1">
+                                    <span class="flex items-center gap-1">
+                                        <i class="fa-regular fa-heart" style="color: rgb(255, 73, 73);"></i>
+                                        <?= $article['likes_count'] ?>
+                                    </span>
+                                    <span><?= count($article['tags']) ?>個のタグ</span>
                                 </div>
-                                <svg class="align-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
-                                </svg>
-                            </section>
+                            </div>
+                            <svg class="self-center" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.707031 0.707092L7.70703 7.70709L0.707031 14.7071" stroke="#526175" stroke-width="2" />
+                            </svg>
                         </article>
                     <?php endforeach; ?>
 
@@ -215,5 +220,4 @@
         </div>
     </div>
 </body>
-
 </html>
