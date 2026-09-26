@@ -113,38 +113,39 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container grid grid-cols-[1fr_2fr]">
+            <header class="header-container grid grid-cols-[1fr_3fr]">
                 <div class="header-block flex-none">
                     <h1 class="header-title">ホーム</h1>
                     <p class="header-description">登録記事一覧</p>
                 </div>
-                <div class="header-right-container flex gap-3 items-center self-center ml-auto ">
-                    <div class="flex items-stretch rounded-lg  shadow-sm h-full flex-1 hover:opacity-80">
-                        <div class="flex justify-center items-center px-6 gap-3">
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto mw-auto">
+                    <form class="flex items-stretch rounded-lg overflow-hidden shadow-sm h-full flex-1 min-w-[300px] hover:opacity-80">
+                        <div class="relative flex items-center flex-1">
                             <label for="search" class="cursor-pointer">
-                                <i class="fa-solid fa-magnifying-glass text-gray-500"></i>
+                                <i class="fa-solid fa-magnifying-glass text-gray-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
                             </label>
-                            <input class="search-input focus:outline-none bg-white py-1 text-xs"
+                            <input class="search-input pl-10 flex-1 w-full focus:outline-none bg-white py-1 text-xs"
                                 type="text" id="search" placeholder="記事を検索...">
+                            <select
+                                name="type"
+                                id="js-select-btn"
+                                class="search-select bg-[var(--button-color)] px-4 text-xs h-full">
+                                <option value="keyword">キーワード</option>
+                                <option value="tag">タグ</option>
+                            </select>
                         </div>
-                        <select
-                            name="type"
-                            id="js-select-btn"
-                            class="search-select bg-[var(--button-color)] px-4 text-xs h-full">
-                            <option value="keyword">キーワード</option>
-                            <option value="tag">タグ</option>
-                        </select>
-                        <button
-                            class="submit-search-button bg-[var(--color-primary)] text-white rounded-lg px-6 h-full text-sm hover:opacity-80" id="js-search-btn">検索
-                        </button>
-                    </div>
+                    </form>
+                    <button
+                        class="submit-search-button bg-[var(--color-primary)] text-white rounded-lg px-6 h-full text-sm hover:opacity-80" id="js-search-btn"
+                        type="submit">検索
+                    </button>
                     <a href="/mypage"
-                        class="flex items-center gap-1 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
                         <div
-                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                        class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
                             <?= substr($username, 0, 1) ?>
                         </div>
-                        <span class="text-sm font-bold px-3"><?= $username; ?></span>
+                        <span class="text-sm font-bold"><?= $username; ?></span>
                     </a>
                 </div>
             </header>

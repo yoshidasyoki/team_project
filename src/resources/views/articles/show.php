@@ -104,11 +104,22 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">記事詳細</h1>
-                <p class="header-description">記事の詳細を確認いただけます</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">記事詳細</h1>
+                    <p class="header-description">記事の詳細を確認いただけます</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            <?= substr($username, 0, 1) ?>
+                        </div>
+                        <span class="text-sm font-bold"><?= $username; ?></span>
+                    </a>
+                </div>
             </header>
-
             <main class="px-16 py-12 text-gray-700">
                 <section class="flex flex-col gap-6 mb-12">
                     <div class="flex flex-col gap-2">
@@ -120,7 +131,7 @@
                         <h2 class="font-bold text-gray-500">カテゴリ（タグ）</h2>
                         <div class="flex gap-4">
                             <?php foreach ($checkedTags as $checkedTag) : ?>
-                                <span class="latest-post-tag text-xs font-bold text-red-500 bg-red-50 px-5 py-2.5 rounded-md">
+                                <span class="latest-post-tag text-xs font-bold border text-red-500 bg-red-50 px-5 py-2.5 rounded-md">
                                     <?= $checkedTag['name'] ?>
                                 </span>
                             <?php endforeach; ?>

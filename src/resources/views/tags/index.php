@@ -98,26 +98,38 @@
             </div>
         </aside>
         <div class="main-container">
-            <header class="header-container">
-                <h1 class="header-title">タグ管理</h1>
-                <p class="header-description">タグを管理して、記事の整理を行います</p>
+            <header class="header-container flex justify-between">
+                <div class="header-block">
+                    <h1 class="header-title">タグ管理</h1>
+                    <p class="header-description">タグを管理して、記事の整理を行います</p>
+                </div>
+                <div class="header-right-container flex gap-3 items-center self-center ml-auto">
+                    <a href="/mypage"
+                        class="flex items-center gap-3 bg-gray-100 rounded-full px-3 py-1 shadow-sm h-full hover:opacity-80">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            <?= substr($username, 0, 1) ?>
+                        </div>
+                        <span class="text-sm font-bold"><?= $username; ?></span>
+                    </a>
+                </div>
             </header>
             <main class="p-8 grid grid-cols-1 gap-8 items-start">
                 <section class="input-tag-container bg-white rounded-xl border border-gray-200 p-8">
-                    <h3 class="post-tag font-bold">タグを入力</h3>
-                    <div class="input-tag-name-container flex items-stretch rounded-lg gap-4 pt-8">
-                        <form class="w-[70%] rounded-lg hover:opacity-80" action="/tags/store" method="POST">
-                            <input class="input-tag w-full pl-4 py-4 rounded-xl text-sm border border-gray-200 rounded-lg" type="text" id="title" name="tag" placeholder="タグの名前を入力してください">
-                            <button class="submit-search-button bg-[var(--button-color)] text-white rounded-lg my-4 px-6 py-2 text-sm hover:opacity-80" type="submit">追加</button>
+                    <h3 class="post-tag text-xl font-bold">タグを入力</h3>
+                    <div class="input-tag-name-container rounded-lg gap-4 pt-8">
+                        <form class="flex gap-4 rounded-lg hover:opacity-80 items-center" action="/tags/store" method="POST">
+                            <input class="input-tag flex-1 max-w-lg px-8 py-4 rounded-xl text-sm border border-gray-200" type="text" id="title" name="tag" placeholder="タグの名前を入力してください">
+                            <button class="submit-search-button bg-[var(--button-color)] text-white rounded-lg px-6 py-4 text-sm hover:opacity-80 shrink-0" type="submit">追加</button>
                         </form>
                     </div>
                 </section>
-                <section class="tag-manage-container bg-white rounded-xl border border-gray-200 p-6">
-                    <h3 class="tag-manage-title font-bold">タグ一覧</h3>
+                <section class="tag-manage-container bg-white rounded-xl border border-gray-200 p-8">
+                    <h3 class="tag-manage-title text-xl font-bold">タグ一覧</h3>
                     <div class="tag-cards-container grid grid-cols-4 p-6 gap-6">
                         <?php foreach ($tags as $tag): ?>
                         <article class="tag-cards flex items-center justify-between bg-white rounded-xl border border-gray-200 p-4">
-                            <span class="tag-name text-xs font-bold text-red-500 bg-red-50 px-6 py-3 rounded-full">
+                            <span class="tag-name text-xs font-bold text-red-500 bg-red-50 px-6 py-3 rounded-full max-w-30 truncate">
                                 <?= $tag['name'] ?>
                             </span>
                             <div class="tag-card-right flex gap-2">
